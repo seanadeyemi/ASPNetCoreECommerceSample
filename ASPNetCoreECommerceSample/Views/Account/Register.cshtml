@@ -1,0 +1,59 @@
+﻿@model UserRegistrationModel
+
+
+
+<div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="index.html">Home</a>
+                </li>
+                <li class="active">Register </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="login-register-area pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+
+                        <a class="active" data-toggle="tab" href="#lg2">
+                            <h4> register </h4>
+                        </a>
+                    </div>
+                    <div class="tab-content">
+
+                        <div id="lg2" class="tab-pane active">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <form asp-controller="Account" asp-action="Register" method="post">
+                                        <div asp-validation-summary="All" class="text-danger"></div>
+                                        <input asp-for="UserName" type="text" placeholder="Username">
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                        <input asp-for="Password" type="password" placeholder="Password">
+                                        <span asp-validation-for="Password" class="text-danger"></span>
+                                        <input asp-for="ConfirmPassword" type="password" placeholder="Confirm Password">
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                        <input asp-for="Email" placeholder="Email" type="email">
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                        <input asp-for="FirstName" placeholder="Full Name" type="text">
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                        <input asp-for="LastName" placeholder="Full Name" type="text">
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                        <div class="button-box">
+                                            <button type="submit"><span>Register</span></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

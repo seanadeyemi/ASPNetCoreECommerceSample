@@ -4,6 +4,7 @@ using ASPNetCoreECommerceSample.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPNetCoreECommerceSample.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    partial class ECommerceContextModelSnapshot : ModelSnapshot
+    [Migration("20231123174010_UpdateProductWithDate")]
+    partial class UpdateProductWithDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,95 +23,6 @@ namespace ASPNetCoreECommerceSample.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Banner", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description1")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description2")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Banners");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description1 = "Exquisite Suits",
-                            Description2 = "Nice Jackets",
-                            Title = "Buchi Summer Collection"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description1 = "Blazers",
-                            Description2 = "Sneakers",
-                            Title = "Victor Designer wears"
-                        });
-                });
-
-            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.BannerImage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("BannerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BannerId");
-
-                    b.ToTable("BannerImages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BannerId = 1,
-                            ImagePath = ""
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BannerId = 1,
-                            ImagePath = ""
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BannerId = 2,
-                            ImagePath = ""
-                        },
-                        new
-                        {
-                            Id = 4,
-                            BannerId = 2,
-                            ImagePath = ""
-                        });
-                });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Category", b =>
                 {
@@ -168,9 +81,6 @@ namespace ASPNetCoreECommerceSample.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Rating")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -245,15 +155,6 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.ToTable("ProductSizes");
                 });
 
-            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.BannerImage", b =>
-                {
-                    b.HasOne("ASPNetCoreECommerceSample.Entities.Banner", null)
-                        .WithMany("BannerImages")
-                        .HasForeignKey("BannerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Product", b =>
                 {
                     b.HasOne("ASPNetCoreECommerceSample.Entities.Category", "Category")
@@ -285,11 +186,6 @@ namespace ASPNetCoreECommerceSample.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Banner", b =>
-                {
-                    b.Navigation("BannerImages");
                 });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Product", b =>

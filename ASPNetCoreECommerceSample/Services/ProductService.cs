@@ -1,12 +1,17 @@
 ﻿using ASPNetCoreECommerceSample.Data;
 using ASPNetCoreECommerceSample.Entities;
 using ASPNetCoreECommerceSample.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ASPNetCoreECommerceSample.Services
 {
     public interface IProductService
     {
         List<Product> GetAllProducts();
+        List<Product> GetNewArrivals();
+        List<Product> GetBestSellers();
+        List<Product> GetSaleItems();
+        Product GetProductById(int id);
     }
 
     public class ProductService : IProductService
@@ -14,9 +19,9 @@ namespace ASPNetCoreECommerceSample.Services
         private readonly ECommerceContext _context;
         private readonly IWebHostEnvironment _environment;
 
-        public ProductService(ECommerceContext context, IWebHostEnvironment environment)
+        public ProductService(ECommerceContext _context, IWebHostEnvironment environment)
         {
-            _context = context;
+            this._context = _context;
             _environment = environment;
         }
 
@@ -29,7 +34,27 @@ namespace ASPNetCoreECommerceSample.Services
             return productsList;
         }
 
-        public void AddProduct(ProductModel productModel)
+
+
+        public Product GetProductById(int id)
+        {
+
+
+            var product = _context.Products.Find(id);
+
+            if (product == null)
+            {
+                throw new ValidationException("Id is required"); // Return a 404 Not Found response if the product is not found.
+
+            }
+
+
+            return product;
+        }
+
+
+
+        public async Task AddProduct(ProductModel productModel)
         {
 
             // Create a list to store the file paths associated with the product
@@ -37,25 +62,30 @@ namespace ASPNetCoreECommerceSample.Services
 
 
             // Handle the uploaded images
-            //if (productModel.Images != null && productModel.Images.Count > 0)
-            //{
-            //    foreach (var imageFile in productModel.Images)
-            //    {
-            //        if (imageFile != null && imageFile.ContentLength > 0)
-            //        {
-            //            // Save the image to a location of your choice, e.g., a folder on the server
-            //            // You can generate a unique file name to avoid overwriting existing images
-            //            var fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-            //            var filePath = Path.Combine(_environment.WebRootPath + "/Images", fileName);
-            //            imageFile.SaveAs(filePath);
+            if (productModel.Images != null && productModel.Images.Count > 0)
+            {
+                foreach (var imageFile in productModel.Images)
+                {
+                    if (imageFile != null && imageFile.Length > 0)
+                    {
+                        // Save the image to a location of your choice, e.g., a folder on the server
+                        // You can generate a unique file name to avoid overwriting existing images
+                        var fileName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
+                        var filePath = Path.Combine(_environment.WebRootPath + "/Images", fileName);
+                        // imageFile.SaveAs(filePath);
 
-            //            // Store the file path or other information in your database for reference
-            //            // You can associate the file with the product being added
-            //            // Store the file path in the list
-            //            imagePaths.Add("Images/" + fileName);
-            //        }
-            //    }
-            //}
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await imageFile.CopyToAsync(stream);
+                        }
+
+                        // Store the file path or other information in your database for reference
+                        // You can associate the file with the product being added
+                        // Store the file path in the list
+                        imagePaths.Add("Images/" + fileName);
+                    }
+                }
+            }
 
 
 
@@ -68,8 +98,11 @@ namespace ASPNetCoreECommerceSample.Services
                 Quantity = productModel.Quantity,
                 Description = productModel.Description,
                 NormalPrice = productModel.NormalPrice,
+                DiscountPrice = productModel.DiscountPrice,
+                LongDescription = productModel.LongDescription,
+
                 //Color = productModel.Color,
-                //Category = context.Categories.Find(productModel.SelectedCategoryId) // Set the Category property based on the selected category ID
+                Category = _context.Categories.Find(productModel.SelectedCategoryId) // Set the Category property based on the selected category ID
             };
 
 
@@ -94,6 +127,37 @@ namespace ASPNetCoreECommerceSample.Services
                 _context.SaveChanges();
             }
 
+        }
+
+        public List<Product> GetNewArrivals()
+        {
+            DateTime sevenDaysAgo = DateTime.Now.Date.AddDays(-7);
+
+            var newArrivals = _context.Products
+                .Where(p => p.DateAdded >= sevenDaysAgo)
+                .OrderBy(p => p.DateAdded)
+                .ToList();
+
+            return newArrivals;
+        }
+
+        public List<Product> GetBestSellers()
+        {
+            var bestSellers = _context.Products
+            .OrderByDescending(p => p.Quantity)
+            .ToList();
+
+            return bestSellers;
+        }
+
+        public List<Product> GetSaleItems()
+        {
+            var saleItems = _context.Products
+          .Where(p => p.DiscountPrice > 0)
+          .OrderBy(p => p.Id)
+          .ToList();
+
+            return saleItems;
         }
 
     }

@@ -13,5 +13,9 @@
 
         public virtual List<ProductColor> AvailableColors { get; set; }
         public virtual List<ProductSize> AvailableSizes { get; set; }
+
+        public DateTime DateAdded { get; set; }
+        public DateTime? DateModified { get; set; }
+        public int? Rating { get; internal set; }
     }
 }

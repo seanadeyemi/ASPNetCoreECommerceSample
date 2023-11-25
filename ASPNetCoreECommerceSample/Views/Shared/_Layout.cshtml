@@ -1,4 +1,8 @@
-﻿<!doctype html>
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
+@using System.Security.Claims;
+
+<!doctype html>
 <html class="no-js" lang="zxx">
 
 
@@ -39,7 +43,7 @@
                             <ul>
                                 <li>
                                     <a href="index.html">Home</a>
-                                  
+
                                 </li>
                                 <li>
                                     <a href="shop.html"> Categories <i class="fa fa-angle-down"></i> </a>
@@ -48,10 +52,10 @@
                                             <ul>
                                                 <li class="mega-menu-title"><a href="#">shop layout</a></li>
                                                 <li><a href="shop.html">standard style</a></li>
-                                             
+
                                             </ul>
                                         </li>
-                                    
+
                                         <li>
                                             <ul>
                                                 <li class="mega-menu-img"><a href="shop.html"><img src="assets/img/banner/banner-12.png" alt=""></a></li>
@@ -59,8 +63,8 @@
                                         </li>
                                     </ul>
                                 </li>
-                                                           
-                              
+
+
                                 <li><a href="about.html"> About </a></li>
                                 <li><a href="contact.html"> Contact</a></li>
                             </ul>
@@ -78,15 +82,54 @@
                                 </form>
                             </div>
                         </div>
+                        @{
+                            var firstnameClaim = User.Claims.FirstOrDefault(c => c.Type == "FirstName");
+                        }
                         <div class="same-style account-satting">
-                            <a class="account-satting-active" href="#"><i class="pe-7s-user-female"></i></a>
+
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a class="account-satting-active" href="#">
+                                    <span style="font-size: 15px; margin-bottom: 10px;">Hi, @firstnameClaim?.Value</span>
+
+                                    <i class="pe-7s-user-female"></i>
+
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="account-satting-active" href="#"><i class="pe-7s-user-female"></i></a>
+
+                            }
                             <div class="account-dropdown">
-                                <ul>
-                                    <li><a href="login-register.html">Login</a></li>
-                                    <li><a href="login-register.html">Register</a></li>
-                                    <li><a href="wishlist.html">Wishlist  </a></li>
-                                    <li><a href="my-account.html">my account</a></li>
-                                </ul>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm">
+                                        <input type="hidden" asp-antiforgery="true" />
+                                        <ul>
+                                            <li>
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                            </li>
+                                        </ul>
+                                    </form>
+                                    <ul>
+                                        <li><a href="wishlist.html">Wishlist  </a></li>
+                                        <li><a href="my-account.html">my account</a></li>
+                                    </ul>
+
+                                }
+                                else
+                                {
+
+                                    <ul>
+                                        <li><a href="/Account/Login">Login </a></li>
+                                        <li><a href="/Account/Register">Register</a></li>
+                                        <li><a href="wishlist.html">Wishlist  </a></li>
+                                    </ul>
+
+                                }
+
                             </div>
                         </div>
                         <div class="same-style header-wishlist">
@@ -144,7 +187,7 @@
                     <nav id="mobile-menu-active">
                         <ul class="menu-overflow">
                             <li>
-                                <a href="index.html">HOME</a>                              
+                                <a href="index.html">HOME</a>
                             </li>
                             <li>
                                 <a href="shop.html">Shop</a>
@@ -434,8 +477,6 @@
         </div>
     </div>
     <!-- Modal end -->
-  
-
     <!-- All JS is here
       ============================================ -->
 
@@ -443,19 +484,20 @@
     <script src="~/js/vendor/jquery-3.5.1.min.js"></script>
     <script src="~/js/vendor/jquery-migrate-3.3.0.min.js"></script>
     <script src="~/js/vendor/bootstrap.bundle.min.js"></script>
-    <script src="~/js/plugins.js"></script> 
-    
+    <script src="~/js/plugins.js"></script>
+
     <!-- Ajax Mail -->
-    <script src="~/js/ajax-mail.js"></script>   
-    
+    <script src="~/js/ajax-mail.js"></script>
+
     <!-- Main JS -->
     <script src="~/js/main.js"></script>
 
 
-     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @RenderSection("script2", required: false)
 </body>
 
 

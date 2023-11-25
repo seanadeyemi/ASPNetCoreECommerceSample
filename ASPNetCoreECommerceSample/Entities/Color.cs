@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ASPNetCoreECommerceSample.Entities
+﻿namespace ASPNetCoreECommerceSample.Entities
 {
     public class ProductColor
     {
-        [Key]
+
         public int Id { get; set; }
         public string Description { get; set; }
 

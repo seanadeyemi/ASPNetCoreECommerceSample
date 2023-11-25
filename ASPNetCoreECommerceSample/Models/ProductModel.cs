@@ -12,12 +12,10 @@ namespace ASPNetCoreECommerceSample.Models
         public string LongDescription { get; set; }
         public decimal NormalPrice { get; set; }
         public decimal DiscountPrice { get; set; }
-        public bool HasDiscount { get; set; }
+        public bool HasDiscount { get; set; } = false;
 
         public int Rating { get; set; }
         public int ReviewCount { get; set; }
-        public List<string> AvailableColors { get; set; }
-        public List<string> AvailableSizes { get; set; }
         public List<ProductModel> RelatedProducts { get; set; }
         public string AdditionalInformation { get; set; }
 
@@ -31,5 +29,19 @@ namespace ASPNetCoreECommerceSample.Models
         [DisplayName("Images")]
         public List<IFormFile> Images { get; set; } // Property for image uploads
         public int Quantity { get; internal set; }
+
+        [DisplayName("Available Colors")]
+        public List<string> AvailableColors { get; set; }
+
+        [DisplayName("Selected Colors")]
+        public List<string> SelectedColors { get; set; } // New property to hold the selected colors
+
+        [DisplayName("Available Sizes")]
+        public List<string> AvailableSizes { get; set; }
+
+        [DisplayName("Selected Sizes")]
+        public List<string> SelectedSizes { get; set; } // New property to hold the selected colors
+
+
     }
 }

@@ -1,45 +1,34 @@
-﻿<div class="slider-area">
+﻿@model LandingPageModel
+
+
+<div class="slider-area">
     <div class="slider-active owl-carousel nav-style-1 owl-dot-none">
-        <div class="single-slider slider-height-1 bg-purple">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
-                        <div class="slider-content slider-animated-1">
-                            <h3 class="animated">Smart Products</h3>
-                            <h1 class="animated">Buchi Stores <br>2020 Collection</h1>
-                            <div class="slider-btn btn-hover">
-                                <a class="animated" href="shop.html">SHOP NOW</a>
+        @foreach (var banner in Model.Banners)
+        {
+            <div class="single-slider slider-height-1 bg-purple">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
+                            <div class="slider-content slider-animated-1">
+                                <h3 class="animated">@banner.Title</h3>
+                                <h1 class="animated"> @banner.Description1 <br>@banner.Description2</h1>
+                                <div class="slider-btn btn-hover">
+                                    <a class="animated" href="shop.html">SHOP NOW</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
-                        <div class="slider-single-img slider-animated-1">
-                            <img class="animated" src="~/img/slider/single-slide-1.png" alt="">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
+                            <div class="slider-single-img slider-animated-1">
+                                @*<img class="animated" src="~/img/slider/single-slide-1.png" alt="">*@
+                                <img class="animated" src="@Url.Content("~/")@banner.ImagePaths[0]" alt="">
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="single-slider slider-height-1 bg-purple">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
-                        <div class="slider-content slider-animated-1">
-                            <h3 class="animated">Smart Products</h3>
-                            <h1 class="animated">Summer Offer <br>2020 Collection</h1>
-                            <div class="slider-btn btn-hover">
-                                <a class="animated" href="shop.html">SHOP NOW</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
-                        <div class="slider-single-img slider-animated-1">
-                            <img class="animated" src="~/img/slider/single-slide-hm1-2.png" alt="">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        }
+
     </div>
 </div>
 <div class="suppoer-area pt-100 pb-60">
@@ -111,858 +100,260 @@
         <div class="tab-content jump">
             <div class="tab-pane" id="product-1">
                 <div class="row">
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-8.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-6.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+                    @foreach (var product in Model.NewArrivalProducts)
+                    {
+                        <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
+                            <div class="product-wrap mb-25">
+                                <div class="product-img">
+                                    <a href="product-details.html">
+                                        @{
+                                            var path = product.ImagePaths.Count > 0 ? product.ImagePaths[0] : "";
+                                        }
+
+                                        <img class="default-img" src="@Url.Content("~/")@path" alt="">
+                                        <img class="hover-img" src="@Url.Content("~/")@path" alt="">
+                                    </a>
+                                    <span class="pink">-10%</span>
+                                    <div class="product-action">
+                                        <div class="pro-same-action pro-wishlist">
+                                            <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
+                                        </div>
+                                        <div class="pro-same-action pro-cart">
+                                            <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
+                                        </div>
+                                        <div class="pro-same-action pro-quickview">
+                                            <a title="Quick View" href="#" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Crew Ventile Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
+                                <div class="product-content text-center">
+                                    <h3><a href="product-details.html">Crew Ventile Coat</a></h3>
+                                    <div class="product-rating">
+                                        @{
+                                            int numberOfYellowStars = product.Rating;
+                                            int numberOfWhiteStars = 5 - numberOfYellowStars;
+                                        }
+                                        @for (int i = 0; i < numberOfYellowStars; i++)
+                                        {
+                                            <i class="fa fa-star-o yellow"></i>
+                                        }
+                                        @for (int i = 0; i < numberOfWhiteStars; i++)
+                                        {
+                                            <i class="fa fa-star-o"></i>
+                                        }
+                                    </div>
+                                    <div class="product-price">
+                                        @if (product.HasDiscount)
+                                        {
+                                            <span>&#x20A6 @product.DiscountPrice.ToString("N")</span>
+                                            <span class="old">&#x20A6; @product.NormalPrice.ToString("N")</span>
+
+                                        }
+                                        else
+                                        {
+                                            <span>&#x20A6 @product.NormalPrice.ToString("N")</span>
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                   @* <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-7.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-4-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-6.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-6-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Overcoat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-5.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-5-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Nice Black Dress</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-4.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-4-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-3.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-3-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Zipper </a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-2.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-2-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-1.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-1-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Zipper </a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
+                        <!--  -->
+                    }
+
                 </div>
             </div>
             <div class="tab-pane active" id="product-2">
                 <div class="row">
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-1.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-1-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+
+                    @foreach (var product in Model.BestSellerProducts)
+                    {
+                        <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
+                            <div class="product-wrap mb-25">
+                                <div class="product-img">
+                                    <a href="product-details.html">
+
+                                        @{
+                                            var path = product.ImagePaths.Count > 0 ? product.ImagePaths[0] : "";
+                                        }
+
+                                        <img class="default-img" src="@Url.Content("~/")@path" alt="">
+                                        <img class="hover-img" src="@Url.Content("~/")@path" alt="">
+                                    </a>
+                                    <span class="pink">-10%</span>
+                                    <div class="product-action">
+                                        <div class="pro-same-action pro-wishlist">
+                                            <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
+                                        </div>
+                                        <div class="pro-same-action pro-cart">
+                                            <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
+                                        </div>
+                                        <div class="pro-same-action pro-quickview">
+                                            <a title="Quick View" href="#" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Zipper </a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
+                                <div class="product-content text-center">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                    <div class="product-rating">
+                                        @{
+                                            int numberOfYellowStars = product.Rating;
+                                            int numberOfWhiteStars = 5 - numberOfYellowStars;
+                                        }
+                                        @for (int i = 0; i < numberOfYellowStars; i++)
+                                        {
+                                            <i class="fa fa-star-o yellow"></i>
+                                        }
+                                        @for (int i = 0; i < numberOfWhiteStars; i++)
+                                        {
+                                            <i class="fa fa-star-o"></i>
+                                        }
+
+                                    </div>
+                                    <div class="product-price">
+                                        @if(product.HasDiscount)
+                                        {
+                                            <span>&#x20A6 @product.DiscountPrice.ToString("N")</span>   
+                                            <span class="old">&#x20A6; @product.NormalPrice.ToString("N")</span>
+                                        } 
+                                        else
+                                        {
+
+                                            <span>&#x20A6; @product.NormalPrice.ToString("N")</span>
+                                        }
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    @*<div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="single-product.html">
-                                    <img class="default-img" src="~/img/product/pro-2.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-2-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-3.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-3-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Zipper </a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-4.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-4-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-5.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-5-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Nice Black Dress</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-6.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-6-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Overcoat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-7.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-4-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="#">
-                                    <img class="default-img" src="~/img/product/pro-8.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-6.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Crew Ventile Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>*@
+                    }
+               
                 </div>
             </div>
             <div class="tab-pane" id="product-3">
                 <div class="row">
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-6.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-6-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+                    @foreach (var product in Model.SaleItemProducts)
+                    {
+                        <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
+                            <div class="product-wrap mb-25">
+                                <div class="product-img">
+                                    <a href="product-details.html">
+
+                                        @{
+                                            var path = product.ImagePaths.Count > 0 ? product.ImagePaths[0] : "";
+                                        }
+
+                                        <img class="default-img" src="@Url.Content("~/")@path" alt="">
+                                        <img class="hover-img" src="@Url.Content("~/")@path" alt="">
+                                    </a>
+                                    <span class="pink">-10%</span>
+                                    <div class="product-action">
+                                        <div class="pro-same-action pro-wishlist">
+                                            <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
+                                        </div>
+                                        <div class="pro-same-action pro-cart">
+                                            <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
+                                        </div>
+                                        <div class="pro-same-action pro-quickview">
+                              @*              <a title="Quick View" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i></a>*@
+                                            <button type="button" class="btn btn-primary quickview" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i> Quick View</button>
+                                            
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Overcoat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
+                                <div class="product-content text-center">
+                                    <h3><a href="product-details.html">@product.Name</a></h3>
+                                    <div class="product-rating">
+                                        @{
+                                            int numberOfYellowStars = product.Rating;
+                                            int numberOfWhiteStars = 5 - numberOfYellowStars;
+                                        }
+                                        @for (int i = 0; i < numberOfYellowStars; i++)
+                                        {
+                                            <i class="fa fa-star-o yellow"></i>
+                                        }
+                                        @for (int i = 0; i < numberOfWhiteStars; i++)
+                                        {
+                                            <i class="fa fa-star-o"></i>
+                                        }
+
+                                    </div>
+                                    <div class="product-price">
+                                        @if (product.HasDiscount)
+                                        {
+                                            <span>&#x20A6 @product.DiscountPrice.ToString("N")</span>
+                                            <span class="old">&#x20A6; @product.NormalPrice.ToString("N")</span>
+                                        }
+                                        else
+                                        {
+
+                                            <span>&#x20A6; @product.NormalPrice.ToString("N")</span>
+                                        }
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-5.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-5-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Nice Black Dress</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-4.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-4-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-3.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-3-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Zipper </a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-2.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-2-1.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-1.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-1-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Winter Zipper </a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-8.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-6.jpg" alt="">
-                                </a>
-                                <span class="pink">-10%</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Crew Ventile Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                    <span class="old">$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
-                        <div class="product-wrap mb-25">
-                            <div class="product-img">
-                                <a href="product-details.html">
-                                    <img class="default-img" src="~/img/product/pro-7.jpg" alt="">
-                                    <img class="hover-img" src="~/img/product/pro-4-1.jpg" alt="">
-                                </a>
-                                <span class="purple">New</span>
-                                <div class="product-action">
-                                    <div class="pro-same-action pro-wishlist">
-                                        <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
-                                    </div>
-                                    <div class="pro-same-action pro-cart">
-                                        <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
-                                    </div>
-                                    <div class="pro-same-action pro-quickview">
-                                        <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="product-content text-center">
-                                <h3><a href="product-details.html">Trench Winter Coat</a></h3>
-                                <div class="product-rating">
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o yellow"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                </div>
-                                <div class="product-price">
-                                    <span>$ 60.00</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+<div class="modal fade product_view" id="product_view">
+</div>
+
+
+
+@section script2{
+   @* <script src="/Scripts/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>*@
+    <script type="text/javascript">
+        $(document).ready(
+            function () {
+
+
+
+
+                $('#product_view').on('show.bs.modal', function (e) {
+
+                    var id = e.relatedTarget.id;
+                    var $modal = $(this);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Home/QuickView',
+                        data: 'id=' + id,
+                        success: function (data) {
+                            $modal.html(data);
+                        }
+                    });
+
+                });
+
+                $(".addToCart").click(function (e) {
+                    var id = this.id;
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/ShoppingCart/AddToCart',
+                        data: {
+                            returnUrl: $('#returnUrl').val(),
+                            ClothId: id
+                        },
+                        success: function (data) {
+
+                            $('#summary_view').html(data);
+                        }
+                    });
+                });
+
+
+            });
+
+    </script>
+
+
+}
 
