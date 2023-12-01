@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -6,6 +6,66 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>6d03a26e-a84d-49f3-9f18-7bfbcd8eca8f</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\bower_components\bootstrap-colorpicker\dist\css\bootstrap-colorpicker.min.css" />
+    <Content Include="wwwroot\bower_components\bootstrap-datepicker\dist\css\bootstrap-datepicker.min.css" />
+    <Content Include="wwwroot\bower_components\bootstrap-daterangepicker\daterangepicker.css" />
+    <Content Include="wwwroot\bower_components\bootstrap\dist\css\bootstrap.min.css" />
+    <Content Include="wwwroot\bower_components\bootstrap\dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="wwwroot\bower_components\bootstrap\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="wwwroot\bower_components\bootstrap\dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="wwwroot\bower_components\bootstrap\dist\fonts\glyphicons-halflings-regulard41d.eot" />
+    <Content Include="wwwroot\bower_components\datatables.net-bs\css\dataTables.bootstrap.min.css" />
+    <Content Include="wwwroot\bower_components\font-awesome\css\font-awesome.min.css" />
+    <Content Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont3e6e.eot" />
+    <Content Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont3e6e.ttf" />
+    <Content Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont3e6e.woff" />
+    <Content Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfontd41d.eot" />
+    <Content Include="wwwroot\bower_components\fullcalendar\dist\fullcalendar.min.css" />
+    <Content Include="wwwroot\bower_components\fullcalendar\dist\fullcalendar.print.min.css" />
+    <Content Include="wwwroot\bower_components\Ionicons\css\ionicons.min.css" />
+    <Content Include="wwwroot\bower_components\Ionicons\fonts\ionicons28b5.eot" />
+    <Content Include="wwwroot\bower_components\Ionicons\fonts\ionicons28b5.ttf" />
+    <Content Include="wwwroot\bower_components\Ionicons\fonts\ionicons28b5.woff" />
+    <Content Include="wwwroot\bower_components\jvectormap\jquery-jvectormap.css" />
+    <Content Include="wwwroot\bower_components\morris.js\morris.css" />
+    <Content Include="wwwroot\bower_components\select2\dist\css\select2.min.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\bower_components\bootstrap-colorpicker\dist\js\bootstrap-colorpicker.min.js" />
+    <None Include="wwwroot\bower_components\bootstrap-datepicker\dist\js\bootstrap-datepicker.min.js" />
+    <None Include="wwwroot\bower_components\bootstrap-daterangepicker\daterangepicker.js" />
+    <None Include="wwwroot\bower_components\bootstrap\dist\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\bower_components\bootstrap\dist\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\bower_components\bootstrap\dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\bower_components\chart.js\Chart.js" />
+    <None Include="wwwroot\bower_components\ckeditor\ckeditor.js" />
+    <None Include="wwwroot\bower_components\datatables.net-bs\js\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\bower_components\datatables.net\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\bower_components\fastclick\lib\fastclick.js" />
+    <None Include="wwwroot\bower_components\Flot\jquery.flot.categories.js" />
+    <None Include="wwwroot\bower_components\Flot\jquery.flot.js" />
+    <None Include="wwwroot\bower_components\Flot\jquery.flot.pie.js" />
+    <None Include="wwwroot\bower_components\Flot\jquery.flot.resize.js" />
+    <None Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont3e6e.svg" />
+    <None Include="wwwroot\bower_components\font-awesome\fonts\fontawesome-webfont3e6e.woff2" />
+    <None Include="wwwroot\bower_components\fullcalendar\dist\fullcalendar.min.js" />
+    <None Include="wwwroot\bower_components\Ionicons\fonts\ionicons28b5.svg" />
+    <None Include="wwwroot\bower_components\jquery-knob\dist\jquery.knob.min.js" />
+    <None Include="wwwroot\bower_components\jquery-knob\js\jquery.knob.js" />
+    <None Include="wwwroot\bower_components\jquery-slimscroll\jquery.slimscroll.min.js" />
+    <None Include="wwwroot\bower_components\jquery-sparkline\dist\jquery.sparkline.min.js" />
+    <None Include="wwwroot\bower_components\jquery-ui\jquery-ui.min.js" />
+    <None Include="wwwroot\bower_components\jquery\dist\jquery.min.js" />
+    <None Include="wwwroot\bower_components\moment\min\moment.min.js" />
+    <None Include="wwwroot\bower_components\moment\moment.js" />
+    <None Include="wwwroot\bower_components\morris.js\morris.min.js" />
+    <None Include="wwwroot\bower_components\PACE\pace.min.js" />
+    <None Include="wwwroot\bower_components\raphael\raphael.min.js" />
+    <None Include="wwwroot\bower_components\select2\dist\js\select2.full.min.js" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />

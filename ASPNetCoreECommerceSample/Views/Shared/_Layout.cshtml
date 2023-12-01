@@ -24,6 +24,18 @@
     <link href="~/css/plugins.css" rel="stylesheet" />
     <link href="~/css/style.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="~/js/plugins.js"></script>
+@*
+    <script src="~/js/vendor/jquery-3.5.1.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+
 </head>
 
 <body>
@@ -344,7 +356,7 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+  @*  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -475,16 +487,16 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
     <!-- Modal end -->
     <!-- All JS is here
       ============================================ -->
 
     <script src="~/js/vendor/modernizr-3.6.0.min.js"></script>
-    <script src="~/js/vendor/jquery-3.5.1.min.js"></script>
+   
     <script src="~/js/vendor/jquery-migrate-3.3.0.min.js"></script>
     <script src="~/js/vendor/bootstrap.bundle.min.js"></script>
-    <script src="~/js/plugins.js"></script>
+  
 
     <!-- Ajax Mail -->
     <script src="~/js/ajax-mail.js"></script>
@@ -493,15 +505,15 @@
     <script src="~/js/main.js"></script>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  @*  <script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+  
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @RenderSection("script2", required: false)
 </body>
 
 
-<!-- Mirrored from live.hasthemes.com/html/2/flone-preview/flone/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 09 Sep 2020 13:51:36 GMT -->
+
 </html>
 
 

@@ -210,11 +210,11 @@
 
                                     </div>
                                     <div class="product-price">
-                                        @if(product.HasDiscount)
+                                        @if (product.HasDiscount)
                                         {
-                                            <span>&#x20A6 @product.DiscountPrice.ToString("N")</span>   
+                                            <span>&#x20A6 @product.DiscountPrice.ToString("N")</span>
                                             <span class="old">&#x20A6; @product.NormalPrice.ToString("N")</span>
-                                        } 
+                                        }
                                         else
                                         {
 
@@ -226,7 +226,7 @@
                             </div>
                         </div>
                     }
-               
+
                 </div>
             </div>
             <div class="tab-pane" id="product-3">
@@ -254,9 +254,9 @@
                                             <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
                                         </div>
                                         <div class="pro-same-action pro-quickview">
-                              @*              <a title="Quick View" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i></a>*@
-                                            <button type="button" class="btn btn-primary quickview" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i> Quick View</button>
-                                            
+                                            <a data-toggle="modal" id="@product.Id" data-target="#product_view" href="#"><i class="pe-7s-look"></i></a>
+                                            @*<button type="button" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i></button>*@
+
                                         </div>
                                     </div>
                                 </div>
@@ -299,60 +299,76 @@
         </div>
     </div>
 </div>
-<div class="modal fade product_view" id="product_view">
+<div class="modal fade" id="product_view">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
 </div>
 
 
 
 @section script2{
-   @* <script src="/Scripts/aos.js"></script>
-    <script>
-        AOS.init();
-    </script>*@
-    <script type="text/javascript">
-        $(document).ready(
-            function () {
+
+<script type="text/javascript">
+    //$(document).ready(
+    //    function () {
 
 
 
 
-                $('#product_view').on('show.bs.modal', function (e) {
+            $('#product_view').on('show.bs.modal', function (e) {
 
-                    var id = e.relatedTarget.id;
-                    var $modal = $(this);
+                var id = e.relatedTarget.id;
+                var $modal = $(this);
 
-                    $.ajax({
-                        type: 'POST',
-                        url: '/Home/QuickView',
-                        data: 'id=' + id,
-                        success: function (data) {
-                            $modal.html(data);
-                        }
-                    });
-
+                $.ajax({
+                    type: 'POST',
+                    url: '/Home/QuickView',
+                    data: 'id=' + id,
+                    success: function (data) {
+                            $('.modal-content', $modal).html(data);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
                 });
-
-                $(".addToCart").click(function (e) {
-                    var id = this.id;
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/ShoppingCart/AddToCart',
-                        data: {
-                            returnUrl: $('#returnUrl').val(),
-                            ClothId: id
-                        },
-                        success: function (data) {
-
-                            $('#summary_view').html(data);
-                        }
-                    });
-                });
-
 
             });
 
-    </script>
+            //$(".addToCart").click(function (e) {
+            //    var id = this.id;
+
+            //    $.ajax({
+            //        type: 'POST',
+            //        url: '/ShoppingCart/AddToCart',
+            //        data: {
+            //            returnUrl: $('#returnUrl').val(),
+            //            ClothId: id
+            //        },
+            //        success: function (data) {
+
+            //            $('#summary_view').html(data);
+            //        }
+            //    });
+            // });
+
+
+       // });
+
+</script>
 
 
 }

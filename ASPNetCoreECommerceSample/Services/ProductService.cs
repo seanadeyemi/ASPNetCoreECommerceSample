@@ -91,6 +91,10 @@ namespace ASPNetCoreECommerceSample.Services
 
             //Save product to database
 
+            var availableColors = productModel.AvailableColors.Select(colorName => _context.ProductColors.FirstOrDefault(c => c.Name == colorName)).ToList();
+
+            var availableSizes = productModel.AvailableSizes.Select(sizeName => _context.ProductSizes.FirstOrDefault(c => c.Name == sizeName)).ToList();
+
             // Create a new Product entity and set its properties
             var productEntity = new Product
             {
@@ -100,9 +104,19 @@ namespace ASPNetCoreECommerceSample.Services
                 NormalPrice = productModel.NormalPrice,
                 DiscountPrice = productModel.DiscountPrice,
                 LongDescription = productModel.LongDescription,
+                AvailableSizes = availableSizes,
+                AvailableColors = availableColors,
+                DateAdded = DateTime.UtcNow,
+                Rating = productModel.Rating,
 
-                //Color = productModel.Color,
-                Category = _context.Categories.Find(productModel.SelectedCategoryId) // Set the Category property based on the selected category ID
+                // Set the ProductCategories property based on the selected category ID
+                ProductCategories = new List<ProductCategory>
+                {
+                    new ProductCategory
+                    {
+                        CategoryId = productModel.SelectedCategoryId
+                    }
+                }
             };
 
 

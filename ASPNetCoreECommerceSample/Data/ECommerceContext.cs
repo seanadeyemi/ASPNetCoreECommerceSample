@@ -20,20 +20,45 @@ namespace ASPNetCoreECommerceSample.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Product>().
-                HasKey(p => p.Id);
+            modelBuilder.Entity<Product>()
+                .HasKey(p => p.Id);
+
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.AvailableColors)
+                .WithOne()
+                .IsRequired();
+
+            modelBuilder.Entity<Product>()
+                .HasMany(p => p.AvailableSizes)
+                .WithOne()
+                .IsRequired();
 
 
-            modelBuilder.Entity<ProductColor>()
-                .HasOne(c => c.Product)
-                .WithMany(p => p.AvailableColors)
-                .HasForeignKey(c => c.ProductId);
+            modelBuilder.Entity<ProductCategory>()
+                .HasKey(pc => new { pc.ProductId, pc.CategoryId });
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasOne(pc => pc.Product)
+                .WithMany(p => p.ProductCategories)
+                .HasForeignKey(pc => pc.ProductId);
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasOne(pc => pc.Category)
+                .WithMany(c => c.ProductCategories)
+                .HasForeignKey(pc => pc.CategoryId);
 
 
-            modelBuilder.Entity<ProductSize>()
-                  .HasOne(c => c.Product)
-                .WithMany(p => p.AvailableSizes)
-                .HasForeignKey(c => c.ProductId);
+
+            //modelBuilder.Entity<ProductColor>()
+            //    .HasMany(p => p.AvailableColors)
+            //    .WithMany()
+            //    .HasForeignKey(c => c.ProductId);
+
+
+            //modelBuilder.Entity<ProductSize>()
+            //      .HasOne(c => c.Product)
+            //    .WithMany(p => p.AvailableSizes)
+            //    .HasForeignKey(c => c.ProductId);
 
 
             //modelBuilder.Entity<Banner>()

@@ -1,6 +1,9 @@
 using ASPNetCoreECommerceSample.Data;
 using ASPNetCoreECommerceSample.Entities.Identity;
+using ASPNetCoreECommerceSample.Handlers;
+using ASPNetCoreECommerceSample.Helpers;
 using ASPNetCoreECommerceSample.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +13,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 var services = builder.Services;
-
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("Atleast21", policy => policy.Requirements.Add(new MinimumAgeRequirement(21)));
+});
 services.AddScoped<IProductService, ProductService>();
 services.AddScoped<IBannerService, BannerService>();
 services.AddScoped<IProductImageService, ProductImageService>();
+services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
+
 
 services.AddDbContext<ECommerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

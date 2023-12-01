@@ -63,6 +63,11 @@ namespace ASPNetCoreECommerceSample.Controllers
 
             var result = await _userManager.CreateAsync(user, usermodel.Password);
 
+
+
+
+
+
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -115,9 +120,25 @@ namespace ASPNetCoreECommerceSample.Controllers
                     var lastNameClaim = new Claim("LastName", user.LastName);
                     await _userManager.AddClaimAsync(user, lastNameClaim);
 
+                    var ageClaim = new Claim(ClaimTypes.DateOfBirth, "2001-10-01");
+
+                    await _userManager.AddClaimAsync(user, ageClaim);
+
 
                     await _signInManager.RefreshSignInAsync(user);
 
+
+                    var roles = await _userManager.GetRolesAsync(user);
+
+                    if (roles.Any(x => x == "Admin"))
+                    {
+                        return Redirect(Url.Action("Index", "Admin"));
+                    }
+
+                    else if (roles.Any(x => x == "Visitor"))
+                    {
+                        return Redirect(Url.Action("Index", "Home"));
+                    }
 
                     return Redirect(GetRedirectUrl(returnUrl));
                 }
