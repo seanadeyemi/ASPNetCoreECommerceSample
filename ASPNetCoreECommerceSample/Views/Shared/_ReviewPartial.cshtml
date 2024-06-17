@@ -1,0 +1,85 @@
+﻿@model ReviewViewModel
+
+<div class="review-wrapper">
+    <div class="single-review">
+        <div class="review-img">
+            @{
+                var path = "img/testimonial/1.jpg";
+            }
+            <img src="@Url.Content("~/")@path" alt="">
+        </div>
+        <div class="review-content">
+            <div class="review-top-wrap">
+                <div class="review-left">
+                    <div class="review-name">
+                        <h4>@Model.UserName</h4>
+                    </div>
+                    <div class="review-rating">
+                        @{
+                            int numberOfYellowStars = Model.Rating;
+                            int numberOfWhiteStars = 5 - numberOfYellowStars;
+                        }
+                        @for (int i = 0; i < numberOfYellowStars; i++)
+                        {
+                            <i class="fa fa-star-o yellow"></i>
+                        }
+                        @for (int i = 0; i < numberOfWhiteStars; i++)
+                        {
+                            <i class="fa fa-star-o"></i>
+                        }
+                    </div>
+                </div>
+                <div class="review-left">
+                    <a href="#" class="reply-link" style="margin-right: 10px;" data-review-id="@Model.ReviewId">Reply</a>
+                    <div class="reply-form" id="reply-form-@Model.ReviewId" style="display:none;">
+                        <form asp-action="AddReview" method="post">
+                            <input type="hidden" name="productId" value="@Model.ProductId" />
+                            <input type="hidden" name="ParentReviewId" value="@Model.ReviewId" />
+                            <div class="form-group">
+                                <label for="UserName">Name:</label>
+                                <input type="text" class="form-control" name="UserName" id="UserName" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Rating">Rating:</label>
+                                <input type="number" class="form-control" name="Rating" id="Rating" min="1" max="5" />
+                                <label for="Email">Email:</label>
+                                <input type="text" class="form-control" name="Email" id="Email" />
+                            </div>
+                            <div class="form-group">
+                                <label for="Comment">Comment:</label>
+                                <textarea class="form-control" name="Comment" id="Comment"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Post</button>
+                            <button type="button" class="btn btn-secondary cancel-reply" data-review-id="@Model.ReviewId">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="review-bottom">
+                <p>@Model.Comment</p>
+            </div>
+        </div>
+    </div>
+    @foreach (var reply in Model.Replies)
+    {
+      //  @await Html.PartialAsync("_ChildReviewPartial", reply);
+        <partial name="~/Views/Shared/_ChildReviewPartial.cshtml" model="@reply" />
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Handle reply link click
+        $('.reply-link').on('click', function (e) {
+            e.preventDefault();
+            var reviewId = $(this).data('review-id');
+            $('#reply-form-' + reviewId).show();
+        });
+
+        // Handle cancel button click
+        $('.cancel-reply').on('click', function () {
+            var reviewId = $(this).data('review-id');
+            $('#reply-form-' + reviewId).hide();
+        });
+    });
+</script>

@@ -233,6 +233,21 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.ToTable("ProductImages");
                 });
 
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ProductProduct", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RelatedProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "RelatedProductId");
+
+                    b.HasIndex("RelatedProductId");
+
+                    b.ToTable("ProductProduct");
+                });
+
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ProductSize", b =>
                 {
                     b.Property<int>("Id")
@@ -253,6 +268,45 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductSizes");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Review", b =>
+                {
+                    b.Property<int>("ReviewId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"), 1L, 1);
+
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentReviewId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ReviewId");
+
+                    b.HasIndex("ParentReviewId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.BannerImage", b =>
@@ -292,6 +346,25 @@ namespace ASPNetCoreECommerceSample.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ProductProduct", b =>
+                {
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Product", "Product")
+                        .WithMany("RelatedProducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Product", "RelatedProduct")
+                        .WithMany("Products")
+                        .HasForeignKey("RelatedProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("RelatedProduct");
+                });
+
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ProductSize", b =>
                 {
                     b.HasOne("ASPNetCoreECommerceSample.Entities.Product", null)
@@ -299,6 +372,25 @@ namespace ASPNetCoreECommerceSample.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Review", b =>
+                {
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Review", "ParentReview")
+                        .WithMany("Replies")
+                        .HasForeignKey("ParentReviewId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ParentReview");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Banner", b =>
@@ -318,6 +410,17 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.Navigation("AvailableSizes");
 
                     b.Navigation("ProductCategories");
+
+                    b.Navigation("Products");
+
+                    b.Navigation("RelatedProducts");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Review", b =>
+                {
+                    b.Navigation("Replies");
                 });
 #pragma warning restore 612, 618
         }

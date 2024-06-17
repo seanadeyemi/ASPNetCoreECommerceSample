@@ -1,6 +1,7 @@
 ﻿using ASPNetCoreECommerceSample.Data;
 using ASPNetCoreECommerceSample.Entities;
 using ASPNetCoreECommerceSample.Models;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace ASPNetCoreECommerceSample.Services
@@ -12,6 +13,7 @@ namespace ASPNetCoreECommerceSample.Services
         List<Product> GetBestSellers();
         List<Product> GetSaleItems();
         Product GetProductById(int id);
+        int Save();
     }
 
     public class ProductService : IProductService
@@ -40,7 +42,30 @@ namespace ASPNetCoreECommerceSample.Services
         {
 
 
-            var product = _context.Products.Find(id);
+            // var product = _context.Products.Find(id);
+
+            //var product = _context.Products
+            //.Include(p => p.Reviews)
+            //    .ThenInclude(r => r.Replies)
+            //.FirstOrDefault(p => p.Id == id);
+
+            //var product = _context.Products
+            //               .Include(p => p.Reviews)
+            //                   .ThenInclude(r => r.Replies)
+            //               .Include(p => p.Products)
+            //                   .ThenInclude(pp => pp.RelatedProduct)
+
+
+
+
+            var product = _context.Products
+               .Include(p => p.RelatedProducts) // Include the RelatedProducts navigation property
+                 .ThenInclude(r => r.RelatedProduct)
+                .Include(p => p.Reviews)
+                  .ThenInclude(g => g.Replies)
+               .FirstOrDefault(p => p.Id == id);
+
+
 
             if (product == null)
             {
@@ -142,6 +167,14 @@ namespace ASPNetCoreECommerceSample.Services
             }
 
         }
+
+        public int Save()
+        {
+            return _context.SaveChanges();
+        }
+
+
+
 
         public List<Product> GetNewArrivals()
         {

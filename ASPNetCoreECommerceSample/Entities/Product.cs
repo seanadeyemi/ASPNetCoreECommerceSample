@@ -16,6 +16,10 @@
 
         public DateTime DateAdded { get; set; }
         public DateTime? DateModified { get; set; }
-        public int? Rating { get; internal set; }
+        public int? Rating { get; set; }
+        // Navigation property
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<ProductProduct> RelatedProducts { get; set; } = new List<ProductProduct>();
+        public ICollection<ProductProduct> Products { get; set; }
     }
 }

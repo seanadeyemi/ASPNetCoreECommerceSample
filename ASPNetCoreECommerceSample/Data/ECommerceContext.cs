@@ -24,6 +24,44 @@ namespace ASPNetCoreECommerceSample.Data
                 .HasKey(p => p.Id);
 
             modelBuilder.Entity<Product>()
+      .HasMany(p => p.Reviews)
+      .WithOne(r => r.Product)
+      .HasForeignKey(r => r.ProductId)
+      .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure the many-to-many relationship for related products
+            modelBuilder.Entity<ProductProduct>()
+                .HasKey(pp => new { pp.ProductId, pp.RelatedProductId });
+
+            //modelBuilder.Entity<ProductProduct>()
+            //    .HasOne(pp => pp.Product)
+            //    .WithMany(p => p.Products)
+            //    .HasForeignKey(pp => pp.ProductId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Entity<ProductProduct>()
+            //    .HasOne(pp => pp.RelatedProduct)
+            //    .WithMany(p => p.RelatedProducts)
+            //    .HasForeignKey(pp => pp.RelatedProductId)
+            //    .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure the many-to-many relationship for related products
+            modelBuilder.Entity<ProductProduct>()
+                .HasKey(pp => new { pp.ProductId, pp.RelatedProductId });
+
+            modelBuilder.Entity<ProductProduct>()
+                .HasOne(pp => pp.Product)
+                .WithMany(p => p.RelatedProducts)
+                .HasForeignKey(pp => pp.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProductProduct>()
+                .HasOne(pp => pp.RelatedProduct)
+                .WithMany(p => p.Products)
+                .HasForeignKey(pp => pp.RelatedProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Product>()
                 .HasMany(p => p.AvailableColors)
                 .WithOne()
                 .IsRequired();
@@ -32,6 +70,12 @@ namespace ASPNetCoreECommerceSample.Data
                 .HasMany(p => p.AvailableSizes)
                 .WithOne()
                 .IsRequired();
+
+            modelBuilder.Entity<Product>()
+             .HasMany(p => p.Reviews)
+             .WithOne(r => r.Product)
+             .HasForeignKey(r => r.ProductId)
+             .OnDelete(DeleteBehavior.NoAction);
 
 
             modelBuilder.Entity<ProductCategory>()
@@ -47,7 +91,16 @@ namespace ASPNetCoreECommerceSample.Data
                 .WithMany(c => c.ProductCategories)
                 .HasForeignKey(pc => pc.CategoryId);
 
+            // Configuring Review entity
+            modelBuilder.Entity<Review>()
+                .HasKey(r => r.ReviewId);
 
+            modelBuilder.Entity<Review>()
+       .HasMany(r => r.Replies)
+       .WithOne(r => r.ParentReview)
+       .HasForeignKey(r => r.ParentReviewId)
+       .OnDelete(DeleteBehavior.NoAction);
+            ;
 
             //modelBuilder.Entity<ProductColor>()
             //    .HasMany(p => p.AvailableColors)

@@ -1,0 +1,54 @@
+﻿@model RelatedProductViewModel
+
+<div class="product-wrap">
+    <div class="product-img">
+        <a href="/Home/ProductDetails/@Model.Id">
+            @{
+                var path = Model.ImagePaths.Count > 0 ? Model.ImagePaths[0] : "";
+            }
+            <img class="default-img" src="@Url.Content("~/")@path" alt="">
+            <img class="hover-img" src="@Url.Content("~/")@path" alt="">
+        </a>
+        <span class="pink">-10%</span>
+        <div class="product-action">
+            <div class="pro-same-action pro-wishlist">
+                <a title="Wishlist" href="#"><i class="pe-7s-like"></i></a>
+            </div>
+            <div class="pro-same-action pro-cart">
+                <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
+            </div>
+            <div class="pro-same-action pro-quickview">
+                <a title="Quick View" href="#" data-toggle="modal" data-target="#exampleModal"><i class="pe-7s-look"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="product-content text-center">
+        <h3><a href="/Home/ProductDetails/@Model.Id">@Model.Name</a></h3>
+        <div class="product-rating">
+            @{
+                int numberOfYellowStars = Model.Rating;
+                int numberOfWhiteStars = 5 - numberOfYellowStars;
+            }
+            @for (int i = 0; i < numberOfYellowStars; i++)
+            {
+                <i class="fa fa-star-o yellow"></i>
+            }
+            @for (int i = 0; i < numberOfWhiteStars; i++)
+            {
+                <i class="fa fa-star-o"></i>
+            }
+        </div>
+        <div class="product-price">
+
+            @if (Model.HasDiscount)
+            {
+                <span> &#x20A6 @Model.DiscountPrice.ToString("N")</span>
+                <span class="old">&#x20A6 @Model.NormalPrice.ToString("N")</span>
+            }
+            else
+            {
+                <span>&#x20A6 @Model.NormalPrice.ToString("N") </span>
+            }
+        </div>
+    </div>
+</div>

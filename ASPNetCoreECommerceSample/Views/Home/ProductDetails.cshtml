@@ -1,0 +1,292 @@
+﻿@model ProductDetailsModel
+
+@{
+    var replyCount = Model.Reviews.Select(x => x.Replies).ToList().Count;
+
+}
+
+<div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="/Home/Index">Home</a>
+                </li>
+                <li class="active">Shop Details </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="shop-area pt-100 pb-100">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details">
+                    <div class="product-details-img">
+                        <div class="tab-content jump">
+                            @{
+                                var path = @Model.Product.ImagePaths.Count > 0 ? Model.Product.ImagePaths[0] : "";
+                                var path2 = @Model.Product.ImagePaths.Count > 1 ? Model.Product.ImagePaths[1] : "";
+                                var path3 = @Model.Product.ImagePaths.Count > 2 ? Model.Product.ImagePaths[2] : "";
+                                var path4 = @Model.Product.ImagePaths.Count > 3 ? Model.Product.ImagePaths[3] : "";
+                            }
+                            <div id="shop-details-1" class="tab-pane large-img-style">
+                                <img src="@Url.Content("~/")@path" alt="">
+                                <span class="dec-price">-10%</span>
+                                <div class="img-popup-wrap">
+                                    <a class="img-popup" href="@Url.Content("~/")@path"><i class="pe-7s-expand1"></i></a>
+                                </div>
+                            </div>
+                            <div id="shop-details-2" class="tab-pane active large-img-style">
+                                <img src="@Url.Content("~/")@path2" alt="">
+                                <span class="dec-price">-10%</span>
+                                <div class="img-popup-wrap">
+                                    <a class="img-popup" href="@Url.Content("~/")@path2"><i class="pe-7s-expand1"></i></a>
+                                </div>
+                            </div>
+                            <div id="shop-details-3" class="tab-pane large-img-style">
+                                <img src="@Url.Content("~/")@path3" alt="">
+                                <span class="dec-price">-10%</span>
+                                <div class="img-popup-wrap">
+                                    <a class="img-popup" href="@Url.Content("~/")@path3"><i class="pe-7s-expand1"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="shop-details-tab nav">
+                            <a class="shop-details-overly" href="#shop-details-1" data-toggle="tab">
+                                <img src="@Url.Content("~/")@path" alt="">
+                            </a>
+                            <a class="shop-details-overly active" href="#shop-details-2" data-toggle="tab">
+                                <img src="@Url.Content("~/")@path2" alt="">
+                            </a>
+                            <a class="shop-details-overly" href="#shop-details-3" data-toggle="tab">
+                                <img src="@Url.Content("~/")@path3" alt="">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <div class="product-details-content ml-70">
+                    <h2>@Model.Product.Name</h2>
+                    <div class="product-details-price">
+                        @if (Model.Product.HasDiscount)
+                        {
+                            <span> &#x20A6 @Model.Product.DiscountPrice.ToString("N")</span>
+                            <span class="old">&#x20A6 @Model.Product.NormalPrice.ToString("N")</span>
+                        }
+                        else
+                        {
+                            <span>&#x20A6 @Model.Product.NormalPrice.ToString("N") </span>
+                        }
+                    </div>
+                    <div class="pro-details-rating-wrap">
+                        <div class="pro-details-rating">
+                            @{
+                                int numberOfYellowStars = Model.Product.Rating;
+                                int numberOfWhiteStars = 5 - numberOfYellowStars;
+                            }
+                            @for (int i = 0; i < numberOfYellowStars; i++)
+                            {
+                                <i class="fa fa-star-o yellow"></i>
+                            }
+                            @for (int i = 0; i < numberOfWhiteStars; i++)
+                            {
+                                <i class="fa fa-star-o"></i>
+                            }
+                        </div>
+                        <span><a href="#">@replyCount Reviews</a></span>
+                    </div>
+                    <p>@Model.Product.LongDescription</p>
+                    <div class="pro-details-list">
+                        <ul>
+                            <li>- 0.5 mm Dail</li>
+                            <li>- Inspired vector icons</li>
+                            <li>- Very modern style  </li>
+                        </ul>
+                    </div>
+                    <div class="pro-details-size-color">
+                        <div class="pro-details-color-wrap">
+                            <span>Color</span>
+                            <div class="pro-details-color-content">
+                                <ul>
+                                    @{
+                                        if (Model.Product.AvailableColors != null)
+                                        {
+                                            foreach (var clr in Model.Product.AvailableColors)
+                                            {
+                                                <li class="@clr"></li>
+                                            }
+                                        }
+                                    }
+
+                                    @*  <li class="blue"></li>
+                                    <li class="maroon active"></li>
+                                    <li class="gray"></li>
+                                    <li class="green"></li>
+                                    <li class="yellow"></li> *@
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="pro-details-size">
+                            <span>Size</span>
+                            <div class="pro-details-size-content">
+                                <ul>
+                                    @{
+                                        if (Model.Product.AvailableSizes != null)
+                                        {
+                                            foreach (var sz in Model.Product.AvailableSizes)
+                                            {
+                                                <li><a href="#">@sz</a></li>
+                                            }
+                                        }
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pro-details-quality">
+                        <div class="cart-plus-minus">
+                            <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
+                        </div>
+                        <div class="pro-details-cart btn-hover">
+                            <a href="#">Add To Cart</a>
+                        </div>
+                        <div class="pro-details-wishlist">
+                            <a href="#"><i class="fa fa-heart-o"></i></a>
+                        </div>
+                        <div class="pro-details-compare">
+                            <a href="#"><i class="pe-7s-shuffle"></i></a>
+                        </div>
+                    </div>
+                    <div class="pro-details-meta">
+                        <span>Categories :</span>
+                        <ul>
+                            <li><a href="#">Minimal,</a></li>
+                            <li><a href="#">Furniture,</a></li>
+                            <li><a href="#">Fashion</a></li>
+                        </ul>
+                    </div>
+                    <div class="pro-details-meta">
+                        <span>Tag :</span>
+                        <ul>
+                            <li><a href="#">Fashion, </a></li>
+                            <li><a href="#">Furniture,</a></li>
+                            <li><a href="#">Electronic</a></li>
+                        </ul>
+                    </div>
+                    <div class="pro-details-social">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                            <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="description-review-area pb-90">
+    <div class="container">
+        <div class="description-review-wrapper">
+            <div class="description-review-topbar nav">
+                <a data-toggle="tab" href="#des-details1">Additional information</a>
+                <a class="active" data-toggle="tab" href="#des-details2">Description</a>
+                
+                <a data-toggle="tab" href="#des-details3">Reviews (@replyCount)</a>
+            </div>
+            <div class="tab-content description-review-bottom">
+                <div id="des-details2" class="tab-pane active">
+                    <div class="product-description-wrapper">
+                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit, sed do eiusmod tempor incididunt</p>
+                        <p>ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commo consequat. Duis aute irure dolor in reprehend in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt </p>
+                    </div>
+                </div>
+                <div id="des-details1" class="tab-pane ">
+                    <div class="product-anotherinfo-wrapper">
+                        <ul>
+                            <li><span>Weight</span> 400 g</li>
+                            <li><span>Dimensions</span>10 x 10 x 15 cm </li>
+                            <li><span>Materials</span> 60% cotton, 40% polyester</li>
+                            <li><span>Other Info</span> American heirloom jean shorts pug seitan letterpress</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="des-details3" class="tab-pane">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            @foreach (var review in Model.Reviews)
+                            {
+
+                                <partial name="~/Views/Shared/_ReviewPartial.cshtml" model="@review" />
+                            }
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="ratting-form-wrapper pl-50">
+                                <h3>Add a Review</h3>
+                                <div class="ratting-form">
+                                    <form asp-action="AddReview" method="post">
+                                        <input type="hidden" name="productId" value="@Model.Product.Id" />
+                                        <input type="hidden" name="ParentReviewId" value="@Model.Reviews.FirstOrDefault()?.ParentReviewId" />
+                                        <div class="star-box">
+                                            <span>Your rating:</span>
+                                            <div class="ratting-star">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
+                                         @*    <input type="number" name="Rating" id="Rating" min="1" max="5" /> *@
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="rating-form-style mb-10">
+                                                    <input placeholder="Name" type="text" name="UserName">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="rating-form-style mb-10">
+                                                    <input placeholder="Email" type="email" name="Email">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="rating-form-style form-submit">
+                                                    <textarea name="Comment" placeholder="Message"></textarea>
+                                                    <input type="submit" value="Submit">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="related-product-area pb-95">
+    <div class="container">
+        <div class="section-title text-center mb-50">
+            <h2>Related products</h2>
+        </div>
+        <div class="related-product-active owl-carousel owl-dot-none">
+            @if (Model.RelatedProducts != null)
+            {
+                foreach (var relatedProduct in Model.RelatedProducts)
+                {
+                    // await Html.PartialAsync("~/Views/Shared/_RelatedProductsPartial", relatedProduct);
+
+                    <partial name="~/Views/Shared/_RelatedProductsPartial.cshtml" model="@relatedProduct" />
+                }
+            }
+
+        </div>
+    </div>
+</div>

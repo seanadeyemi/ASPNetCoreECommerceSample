@@ -1,6 +1,6 @@
 ﻿@model ProductModel
 
-
+<div class="modal-content">
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
 </div>
@@ -130,127 +130,136 @@
                 <a data-toggle="tab" href="#pro-4"><img src="assets/img/product/quickview-s2.jpg" alt=""></a>*@
             </div>
         </div>
-    </div>
-    <div class="col-md-7 col-sm-12 col-xs-12">
-        <div class="product-details-content quickview-content">
-            <h2>@Model.Name</h2>
-            <div class="product-details-price">
-                <span> @Model.DiscountPrice.ToString("N") </span>
-                <span class="old">@Model.NormalPrice.ToString("N")</span>
-            </div>
-            <div class="pro-details-rating-wrap">
-                <div class="pro-details-rating">
-                    @{
-                        int numberOfYellowStars = Model.Rating;
-                        int numberOfWhiteStars = 5 - numberOfYellowStars;
-                    }
-                    @for (int i = 0; i < numberOfYellowStars; i++)
-                    {
-                        <i class="fa fa-star-o yellow"></i>
-                    }
-                    @for (int i = 0; i < numberOfWhiteStars; i++)
-                    {
-                        <i class="fa fa-star-o"></i>
-                    }
+        <div class="col-md-7 col-sm-12 col-xs-12">
+            <div class="product-details-content quickview-content">
+                <h2>@Model.Name</h2>
+                <div class="product-details-price">
+                        @if(Model.HasDiscount)
+                        {
+                            <span> &#x20A6 @Model.DiscountPrice.ToString("N")</span>
+                            <span class="old">&#x20A6 @Model.NormalPrice.ToString("N")</span>
+                        }
+                        else
+                        {
+                            <span>&#x20A6 @Model.NormalPrice.ToString("N") </span>                      
+                        }
+                       
                 </div>
-                <span>@Model.ReviewCount Reviews</span>
-            </div>
-            <p>@Model.LongDescription</p>
-            <div class="pro-details-list">
-                <ul>
-                    <li>- 0.5 mm Dail</li>
-                    <li>- Inspired vector icons</li>
-                    <li>- Very modern style  </li>
-                </ul>
-            </div>
-            <div class="pro-details-size-color">
-                <div class="pro-details-color-wrap">
-                    <span>Color</span>
-                    <div class="pro-details-color-content">
-                        <ul>
-                            @{
-                                if (Model.AvailableColors != null)
-                                {
-                                    foreach (var clr in Model.AvailableColors)
+                <div class="pro-details-rating-wrap">
+                    <div class="pro-details-rating">
+                        @{
+                            int numberOfYellowStars = Model.Rating;
+                            int numberOfWhiteStars = 5 - numberOfYellowStars;
+                        }
+                        @for (int i = 0; i < numberOfYellowStars; i++)
+                        {
+                            <i class="fa fa-star-o yellow"></i>
+                        }
+                        @for (int i = 0; i < numberOfWhiteStars; i++)
+                        {
+                            <i class="fa fa-star-o"></i>
+                        }
+                    </div>
+                    <span>@Model.ReviewCount Reviews</span>
+                </div>
+                <p>@Model.LongDescription</p>
+                <div class="pro-details-list">
+                    <ul>
+                        <li>- 0.5 mm Dail</li>
+                        <li>- Inspired vector icons</li>
+                        <li>- Very modern style  </li>
+                    </ul>
+                </div>
+                <div class="pro-details-size-color">
+                    <div class="pro-details-color-wrap">
+                        <span>Color</span>
+                        <div class="pro-details-color-content">
+                            <ul>
+                                @{
+                                    if (Model.AvailableColors != null)
                                     {
-                                        <li class="@clr"></li>
+                                        foreach (var clr in Model.AvailableColors)
+                                        {
+                                            <li class="@clr"></li>
+                                        }
                                     }
                                 }
-                            }
 
-                            @*<li class="blue"></li>
-                            <li class="maroon active"></li>
-                            <li class="gray"></li>
-                            <li class="green"></li>
-                            <li class="yellow"></li>
-                            <li class="white"></li>*@
-                        </ul>
+                                @*<li class="blue"></li>
+                                <li class="maroon active"></li>
+                                <li class="gray"></li>
+                                <li class="green"></li>
+                                <li class="yellow"></li>
+                                <li class="white"></li>*@
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="pro-details-size">
-                    <span>Size</span>
-                    <div class="pro-details-size-content">
-                        <ul>
-                            @{
-                                if (Model.AvailableSizes != null)
-                                {
-                                    foreach (var sz in Model.AvailableSizes)
+                    <div class="pro-details-size">
+                        <span>Size</span>
+                        <div class="pro-details-size-content">
+                            <ul>
+                                @{
+                                    if (Model.AvailableSizes != null)
                                     {
-                                        <li><a href="#">@sz</a></li>
+                                        foreach (var sz in Model.AvailableSizes)
+                                        {
+                                            <li><a href="#">@sz</a></li>
+                                        }
                                     }
                                 }
-                            }
 
-                            @*<li><a href="#">s</a></li>
-                            <li><a href="#">m</a></li>
-                            <li><a href="#">l</a></li>
-                            <li><a href="#">xl</a></li>
-                            <li><a href="#">xxl</a></li>*@
-                        </ul>
+                                @*<li><a href="#">s</a></li>
+                                <li><a href="#">m</a></li>
+                                <li><a href="#">l</a></li>
+                                <li><a href="#">xl</a></li>
+                                <li><a href="#">xxl</a></li>*@
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="pro-details-quality">
-                <div class="cart-plus-minus">
-                    <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
+                <div class="pro-details-quality">
+                    <div class="cart-plus-minus">
+                        <input class="cart-plus-minus-box" type="text" name="qtybutton" value="2">
+                    </div>
+                    <div class="pro-details-cart btn-hover">
+                        <a href="#">Add To Cart</a>
+                    </div>
+                    <div class="pro-details-wishlist">
+                        <a href="#"><i class="fa fa-heart-o"></i></a>
+                    </div>
+                    <div class="pro-details-compare">
+                        <a href="#"><i class="pe-7s-shuffle"></i></a>
+                    </div>
                 </div>
-                <div class="pro-details-cart btn-hover">
-                    <a href="#">Add To Cart</a>
+                <div class="pro-details-meta">
+                    <span>Categories :</span>
+                    <ul>
+                        <li><a href="#">Minimal,</a></li>
+                        <li><a href="#">Furniture,</a></li>
+                        <li><a href="#">Fashion</a></li>
+                    </ul>
                 </div>
-                <div class="pro-details-wishlist">
-                    <a href="#"><i class="fa fa-heart-o"></i></a>
+                <div class="pro-details-meta">
+                    <span>Tag :</span>
+                    <ul>
+                        <li><a href="#">Fashion, </a></li>
+                        <li><a href="#">Furniture,</a></li>
+                        <li><a href="#">Electronic</a></li>
+                    </ul>
                 </div>
-                <div class="pro-details-compare">
-                    <a href="#"><i class="pe-7s-shuffle"></i></a>
+                <div class="pro-details-social">
+                    <ul>
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+                        <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                        <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    </ul>
                 </div>
-            </div>
-            <div class="pro-details-meta">
-                <span>Categories :</span>
-                <ul>
-                    <li><a href="#">Minimal,</a></li>
-                    <li><a href="#">Furniture,</a></li>
-                    <li><a href="#">Fashion</a></li>
-                </ul>
-            </div>
-            <div class="pro-details-meta">
-                <span>Tag :</span>
-                <ul>
-                    <li><a href="#">Fashion, </a></li>
-                    <li><a href="#">Furniture,</a></li>
-                    <li><a href="#">Electronic</a></li>
-                </ul>
-            </div>
-            <div class="pro-details-social">
-                <ul>
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                    <li><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                </ul>
             </div>
         </div>
     </div>
+  
 </div>
 </div>
 @section Scripts{
