@@ -1,4 +1,5 @@
-﻿@model LandingPageModel
+﻿@using Microsoft.AspNetCore.Http
+@model LandingPageModel
 
 
 <div class="slider-area">
@@ -100,6 +101,8 @@
         <div class="tab-content jump">
             <div class="tab-pane" id="product-1">
                 <div class="row">
+                    <input type="hidden" value="@Context.Request.Path" name="returnUrl" id="returnUrl" />
+
                     @foreach (var product in Model.NewArrivalProducts)
                     {
                         <div class="col-xl-3 col-md-6 col-lg-4 col-sm-6">
@@ -116,10 +119,11 @@
                                     <span class="pink">-10%</span>
                                     <div class="product-action">
                                         <div class="pro-same-action pro-wishlist">
-                                            <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
+                                            <a title="Wishlist" class="wishlistCart" id="@product.Id"><i class="pe-7s-like"></i></a>
                                         </div>
                                         <div class="pro-same-action pro-cart">
-                                            <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
+                                           
+                                            <a title="Add To Cart" class="addToCart" id="@product.Id"><i class="pe-7s-cart"></i> Add to cart</a>
                                         </div>
                                         <div class="pro-same-action pro-quickview">
                                             <a title="Quick View" href="#" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i></a>
@@ -182,10 +186,10 @@
                                     <span class="pink">-10%</span>
                                     <div class="product-action">
                                         <div class="pro-same-action pro-wishlist">
-                                            <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
+                                            <a title="Wishlist" class="wishlistCart" id="@product.Id"><i class="pe-7s-like"></i></a>
                                         </div>
                                         <div class="pro-same-action pro-cart">
-                                            <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
+                                            <a title="Add To Cart" class="addToCart" id="@product.Id"><i class="pe-7s-cart"></i> Add to cart</a>
                                         </div>
                                         <div class="pro-same-action pro-quickview">
                                             <a title="Quick View" href="#" data-toggle="modal" id="@product.Id" data-target="#product_view"><i class="pe-7s-look"></i></a>
@@ -248,10 +252,10 @@
                                     <span class="pink">-10%</span>
                                     <div class="product-action">
                                         <div class="pro-same-action pro-wishlist">
-                                            <a title="Wishlist" href="wishlist.html"><i class="pe-7s-like"></i></a>
+                                            <a title="Wishlist" class="wishlistCart" id="@product.Id"><i class="pe-7s-like"></i></a>
                                         </div>
                                         <div class="pro-same-action pro-cart">
-                                            <a title="Add To Cart" href="#"><i class="pe-7s-cart"></i> Add to cart</a>
+                                            <a title="Add To Cart" class="addToCart" id="@product.Id"><i class="pe-7s-cart"></i> Add to cart</a>
                                         </div>
                                         <div class="pro-same-action pro-quickview">
                                             <a data-toggle="modal" id="@product.Id" data-target="#product_view" href="#"><i class="pe-7s-look"></i></a>
@@ -348,23 +352,7 @@
 
             });
 
-            //$(".addToCart").click(function (e) {
-            //    var id = this.id;
-
-            //    $.ajax({
-            //        type: 'POST',
-            //        url: '/ShoppingCart/AddToCart',
-            //        data: {
-            //            returnUrl: $('#returnUrl').val(),
-            //            ClothId: id
-            //        },
-            //        success: function (data) {
-
-            //            $('#summary_view').html(data);
-            //        }
-            //    });
-            // });
-
+        
 
        // });
 

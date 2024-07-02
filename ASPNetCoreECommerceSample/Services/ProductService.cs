@@ -134,14 +134,16 @@ namespace ASPNetCoreECommerceSample.Services
                 DateAdded = DateTime.UtcNow,
                 Rating = productModel.Rating,
 
+                CategoryId = productModel.SelectedCategoryId
+
                 // Set the ProductCategories property based on the selected category ID
-                ProductCategories = new List<ProductCategory>
-                {
-                    new ProductCategory
-                    {
-                        CategoryId = productModel.SelectedCategoryId
-                    }
-                }
+                //ProductCategories = new List<ProductCategory>
+                //{
+                //    new ProductCategory
+                //    {
+                //        CategoryId = productModel.SelectedCategoryId
+                //    }
+                //}
             };
 
 

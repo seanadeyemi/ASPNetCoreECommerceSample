@@ -1,0 +1,65 @@
+﻿@model WishlistModel
+
+
+<div class="breadcrumb-area pt-35 pb-35 bg-gray-3">
+    <div class="container">
+        <div class="breadcrumb-content text-center">
+            <ul>
+                <li>
+                    <a href="/Home/Index">Home</a>
+                </li>
+                <li class="active">Wishlist </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="cart-main-area pt-90 pb-100">
+    <div class="container">
+        <h3 class="cart-page-title">Your cart items</h3>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                <form action="#">
+                    <div class="table-content table-responsive cart-table-content">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Product Name</th>
+                                    <th>Until Price</th>
+                                    <th>Qty</th>
+                                    <th>Subtotal</th>
+                                    <th>Add To Cart</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var p in Model.WishlistItems)
+                                {
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <a href="/Home/ProductDetails/@p.ProductId">
+                                                <img src="@Url.Action("GetThumbnail", "ShoppingCart", new { productId = @p.ProductId , width = 82, height = 82 })" alt="Thumbnail" />
+                                             </a>
+                                        </td>
+                                        <td class="product-name"><a href="#">@p.ProductName</a></td>
+                                        <td class="product-price-cart"><span class="amount">&#x20A6; @p.UnitPrice.ToString("N")</span></td>
+                                        <td class="product-quantity">
+                                            <div class="cart-plus-minus">
+                                                <input class="cart-plus-minus-box" type="text" name="qtybutton" value="@p.Quantity">
+                                            </div>
+                                        </td>
+                                        <td class="product-subtotal">&#x20A6; @p.TotalPrice.ToString("N")</td>
+                                        <td class="product-wishlist-cart">
+                                            <a href="#">add to cart</a>
+                                        </td>
+                                    </tr>
+                                }
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

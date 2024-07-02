@@ -18,8 +18,23 @@ namespace ASPNetCoreECommerceSample.Data
         public DbSet<Banner> Banners { get; set; }
         public DbSet<BannerImage> BannerImages { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Address> Addresses { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
+
+        public DbSet<Wishlist> Wishlists { get; set; }
+        public DbSet<WishlistItem> WishlistItems { get; set; }
+
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
+
             modelBuilder.Entity<Product>()
                 .HasKey(p => p.Id);
 
@@ -33,17 +48,6 @@ namespace ASPNetCoreECommerceSample.Data
             modelBuilder.Entity<ProductProduct>()
                 .HasKey(pp => new { pp.ProductId, pp.RelatedProductId });
 
-            //modelBuilder.Entity<ProductProduct>()
-            //    .HasOne(pp => pp.Product)
-            //    .WithMany(p => p.Products)
-            //    .HasForeignKey(pp => pp.ProductId)
-            //    .OnDelete(DeleteBehavior.Restrict);
-
-            //modelBuilder.Entity<ProductProduct>()
-            //    .HasOne(pp => pp.RelatedProduct)
-            //    .WithMany(p => p.RelatedProducts)
-            //    .HasForeignKey(pp => pp.RelatedProductId)
-            //    .OnDelete(DeleteBehavior.Restrict);
 
             // Configure the many-to-many relationship for related products
             modelBuilder.Entity<ProductProduct>()
@@ -77,19 +81,24 @@ namespace ASPNetCoreECommerceSample.Data
              .HasForeignKey(r => r.ProductId)
              .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Category>()
+           .HasOne(c => c.ParentCategory)
+           .WithMany(c => c.SubCategories)
+           .HasForeignKey(c => c.ParentCategoryId);
 
-            modelBuilder.Entity<ProductCategory>()
-                .HasKey(pc => new { pc.ProductId, pc.CategoryId });
 
-            modelBuilder.Entity<ProductCategory>()
-                .HasOne(pc => pc.Product)
-                .WithMany(p => p.ProductCategories)
-                .HasForeignKey(pc => pc.ProductId);
+            //modelBuilder.Entity<ProductCategory>()
+            //    .HasKey(pc => new { pc.ProductId, pc.CategoryId });
 
-            modelBuilder.Entity<ProductCategory>()
-                .HasOne(pc => pc.Category)
-                .WithMany(c => c.ProductCategories)
-                .HasForeignKey(pc => pc.CategoryId);
+            //modelBuilder.Entity<ProductCategory>()
+            //    .HasOne(pc => pc.Product)
+            //    .WithMany(p => p.ProductCategories)
+            //    .HasForeignKey(pc => pc.ProductId);
+
+            //modelBuilder.Entity<ProductCategory>()
+            //    .HasOne(pc => pc.Category)
+            //    .WithMany(c => c.ProductCategories)
+            //    .HasForeignKey(pc => pc.CategoryId);
 
             // Configuring Review entity
             modelBuilder.Entity<Review>()
@@ -125,6 +134,54 @@ namespace ASPNetCoreECommerceSample.Data
 
             modelBuilder.Entity<ProductSize>()
                 .HasKey(p => p.Id);
+
+
+            // Order
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.Customer)
+                .WithMany(c => c.Orders)
+                .HasForeignKey(o => o.CustomerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Order>()
+                .HasOne(o => o.ShippingAddress)
+                .WithMany()
+                .HasForeignKey(o => o.ShippingAddressId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // OrderItem
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId)
+                ;
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(oi => oi.Product)
+                .WithMany()
+                .HasForeignKey(oi => oi.ProductId);
+
+
+            modelBuilder.Entity<Wishlist>()
+                .HasMany(p => p.WishlistItems)
+                .WithOne(p => p.Wishlist)
+                .HasForeignKey(p => p.WishlistId);
+
+
+
+            // Customer
+            modelBuilder.Entity<Customer>()
+                .HasMany(c => c.Addresses)
+                .WithOne(a => a.Customer)
+                .HasForeignKey(a => a.CustomerId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
+
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.NoAction;
+            }
 
             modelBuilder.Entity<Banner>()
             .HasData

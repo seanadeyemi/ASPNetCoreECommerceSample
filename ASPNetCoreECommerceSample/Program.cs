@@ -1,3 +1,4 @@
+using ASPNetCoreECommerceSample.Binders;
 using ASPNetCoreECommerceSample.Data;
 using ASPNetCoreECommerceSample.Entities.Identity;
 using ASPNetCoreECommerceSample.Handlers;
@@ -11,7 +12,10 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(config =>
+{
+    config.ModelBinderProviders.Insert(0, new ShoppingCartModelBinderProvider(new HttpContextAccessor()));
+});
 
 var services = builder.Services;
 services.AddAuthorization(options =>
@@ -22,13 +26,17 @@ services.AddScoped<IProductService, ProductService>();
 services.AddScoped<IBannerService, BannerService>();
 services.AddScoped<IProductImageService, ProductImageService>();
 services.AddSingleton<IAuthorizationHandler, MinimumAgeHandler>();
+services.AddScoped<IImageService, ImageService>();
+services.AddHttpContextAccessor();
+services.AddSession();
+services.AddDistributedMemoryCache();
+
 
 
 services.AddDbContext<ECommerceContext>(options =>
 {
-    options.ConfigureWarnings(warnings =>
+    options.ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored));
 
-           warnings.Ignore(CoreEventId.NavigationBaseIncludeIgnored));
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
@@ -80,6 +88,23 @@ services.ConfigureApplicationCookie(options =>
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var service = scope.ServiceProvider;
+    try
+    {
+        var context = service.GetRequiredService<ECommerceContext>();
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = service.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
+
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -88,6 +113,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication();
 

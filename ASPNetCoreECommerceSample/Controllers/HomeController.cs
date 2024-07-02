@@ -265,6 +265,7 @@ namespace ASPNetCoreECommerceSample.Controllers
                 product.Reviews.Add(review);
 
                 _productService.Save();
+                TempData["ReviewSuccess"] = "Your review has been added successfully!";
 
             }
             catch (Exception ex)

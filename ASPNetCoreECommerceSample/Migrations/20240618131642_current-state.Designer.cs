@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ASPNetCoreECommerceSample.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    [Migration("20240617015928_fresh2")]
-    partial class fresh2
+    [Migration("20240618131642_current-state")]
+    partial class currentstate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,44 @@ namespace ASPNetCoreECommerceSample.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Addresses");
+                });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Banner", b =>
                 {
@@ -121,17 +159,105 @@ namespace ASPNetCoreECommerceSample.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<int?>("ParentCategoryId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentCategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Customer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("CustomerId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ShippingAddressId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ShippingAddressId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Product", b =>
@@ -141,6 +267,9 @@ namespace ASPNetCoreECommerceSample.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
@@ -174,22 +303,9 @@ namespace ASPNetCoreECommerceSample.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ProductCategory", b =>
-                {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId", "CategoryId");
-
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("ProductCategory");
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ProductColor", b =>
@@ -311,32 +427,128 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.ToTable("Review");
                 });
 
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("ShoppingCarts");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ShoppingCartItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShoppingCartId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ShoppingCartId");
+
+                    b.ToTable("ShoppingCartItems");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Address", b =>
+                {
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Customer", "Customer")
+                        .WithMany("Addresses")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.BannerImage", b =>
                 {
                     b.HasOne("ASPNetCoreECommerceSample.Entities.Banner", null)
                         .WithMany("BannerImages")
                         .HasForeignKey("BannerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ProductCategory", b =>
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Category", b =>
                 {
-                    b.HasOne("ASPNetCoreECommerceSample.Entities.Category", "Category")
-                        .WithMany("ProductCategories")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Category", "ParentCategory")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Order", b =>
+                {
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Address", "ShippingAddress")
+                        .WithMany()
+                        .HasForeignKey("ShippingAddressId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("ShippingAddress");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.OrderItem", b =>
+                {
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ASPNetCoreECommerceSample.Entities.Product", "Product")
-                        .WithMany("ProductCategories")
+                        .WithMany()
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Product", b =>
+                {
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Category");
-
-                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ProductColor", b =>
@@ -344,7 +556,7 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.HasOne("ASPNetCoreECommerceSample.Entities.Product", null)
                         .WithMany("AvailableColors")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -353,13 +565,13 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.HasOne("ASPNetCoreECommerceSample.Entities.Product", "Product")
                         .WithMany("RelatedProducts")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("ASPNetCoreECommerceSample.Entities.Product", "RelatedProduct")
                         .WithMany("Products")
                         .HasForeignKey("RelatedProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("Product");
@@ -372,7 +584,7 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.HasOne("ASPNetCoreECommerceSample.Entities.Product", null)
                         .WithMany("AvailableSizes")
                         .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -395,6 +607,36 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ShoppingCart", b =>
+                {
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ShoppingCartItem", b =>
+                {
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ASPNetCoreECommerceSample.Entities.ShoppingCart", "ShoppingCart")
+                        .WithMany("Items")
+                        .HasForeignKey("ShoppingCartId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ShoppingCart");
+                });
+
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Banner", b =>
                 {
                     b.Navigation("BannerImages");
@@ -402,7 +644,19 @@ namespace ASPNetCoreECommerceSample.Migrations
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Category", b =>
                 {
-                    b.Navigation("ProductCategories");
+                    b.Navigation("SubCategories");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Customer", b =>
+                {
+                    b.Navigation("Addresses");
+
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Product", b =>
@@ -410,8 +664,6 @@ namespace ASPNetCoreECommerceSample.Migrations
                     b.Navigation("AvailableColors");
 
                     b.Navigation("AvailableSizes");
-
-                    b.Navigation("ProductCategories");
 
                     b.Navigation("Products");
 
@@ -423,6 +675,11 @@ namespace ASPNetCoreECommerceSample.Migrations
             modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.Review", b =>
                 {
                     b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("ASPNetCoreECommerceSample.Entities.ShoppingCart", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

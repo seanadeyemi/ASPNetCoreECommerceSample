@@ -1,0 +1,66 @@
+﻿@model ASPNetCoreECommerceSample.Models.ShoppingCartModel
+
+<div class="shopping-cart-content">
+    <ul>
+        @if (Model != null)
+        {
+            foreach (var cartitem in Model.Items)
+            {
+                <li class="single-shopping-cart">
+                    <div class="shopping-cart-img">
+                     @*    <a href="#"><img alt="" src="assets/img/cart/cart-1.png"></a> *@
+                        <a class="" href="@Url.Action("ProductDetails","Home", new { id = @cartitem.ProductId } )">
+                            @* <img src="@Url.Content("~/Content/Images/")@cartitem.ProductImagePaths[0]" alt="clothes/@cartitem.ProductName" /> *@
+                            @{
+                                var path = cartitem.ProductImagePaths.Any() ? cartitem.ProductImagePaths[0] : "";
+                            }
+                           @*  <img src="@Url.Content("~/")@path" alt="clothes/@cartitem.ProductName" /> *@
+                            <img src="@Url.Action("GetThumbnail", "ShoppingCart", new { productId = @cartitem.ProductId , width = 82, height = 82 })" alt="Thumbnail" />
+
+
+                        </a>
+                    </div>
+                    <div class="shopping-cart-title">
+                        <h4><a href="#"> @cartitem.ProductName </a></h4>
+                        <h6>Qty: @cartitem.Quantity</h6>
+                        @{
+                            var unitTotal = cartitem.UnitPrice * cartitem.Quantity;
+                        }
+                        <span>&#x20A6; @unitTotal.ToString("N")</span>
+                    </div>
+                    <div class="shopping-cart-delete">
+                       @*  <a href="/ShoppingCart/RemoveFromCart"><i class="fa fa-times-circle"></i></a> *@
+                        <a href="@Url.Action("RemoveFromCart", "ShoppingCart", new { productId = cartitem.ProductId})">
+                            <i class="fa fa-times-circle"></i>
+                        </a>
+
+                    </div>
+                </li>
+            }
+
+        }
+
+        @*   <li class="single-shopping-cart">
+        <div class="shopping-cart-img">
+        <a href="#"><img alt="" src="assets/img/cart/cart-2.png"></a>
+        </div>
+        <div class="shopping-cart-title">
+        <h4><a href="#">T- Shart &amp; Jeans </a></h4>
+        <h6>Qty: 02</h6>
+        <span>$260.00</span>
+        </div>
+        <div class="shopping-cart-delete">
+        <a href="#"><i class="fa fa-times-circle"></i></a>
+        </div>
+        </li> *@
+    </ul>
+    <div class="shopping-cart-total">
+        <h4>Shipping : <span>&#x20A6;20.00</span></h4>
+        <h4>Total : <span class="shop-total">&#x20A6; @Model?.TotalPrice.ToString("N")</span></h4>
+    </div>
+    <div class="shopping-cart-btn btn-hover text-center">
+        <a class="default-btn" href="/ShoppingCart?returnUrl=/Home/Index">view cart</a>
+        <a href="@Url.Action("Checkout", "ShoppingCart")" class="default-btn">checkout</a>
+
+    </div>
+</div>

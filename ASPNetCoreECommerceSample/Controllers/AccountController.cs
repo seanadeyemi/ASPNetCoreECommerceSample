@@ -98,7 +98,7 @@ namespace ASPNetCoreECommerceSample.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> Login(LoginModel loginModel, string returnUrl = null)
+        public async Task<IActionResult> Login(LoginModel loginModel)
         {
             //if (!ModelState.IsValid)
             //{
@@ -140,7 +140,7 @@ namespace ASPNetCoreECommerceSample.Controllers
                         return Redirect(Url.Action("Index", "Home"));
                     }
 
-                    return Redirect(GetRedirectUrl(returnUrl));
+                    return Redirect(GetRedirectUrl("/"));
                 }
                 else
                 {

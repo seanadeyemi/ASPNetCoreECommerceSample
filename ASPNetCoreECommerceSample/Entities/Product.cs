@@ -9,7 +9,7 @@
         public decimal NormalPrice { get; set; }
         public decimal DiscountPrice { get; set; }
         public string LongDescription { get; set; }
-        public List<ProductCategory> ProductCategories { get; set; }
+        // public List<ProductCategory> ProductCategories { get; set; }
 
         public virtual List<ProductColor?>? AvailableColors { get; set; }
         public virtual List<ProductSize?>? AvailableSizes { get; set; }
@@ -21,5 +21,9 @@
         public ICollection<Review> Reviews { get; set; } = new List<Review>();
         public ICollection<ProductProduct> RelatedProducts { get; set; } = new List<ProductProduct>();
         public ICollection<ProductProduct> Products { get; set; }
+
+
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
     }
 }
