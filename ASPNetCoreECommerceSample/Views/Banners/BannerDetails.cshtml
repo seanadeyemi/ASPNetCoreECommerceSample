@@ -1,0 +1,95 @@
+﻿@model ASPNetCoreECommerceSample.Models.BannerModel
+
+@{
+	ViewBag.Title = "Banner Details";
+}
+
+<div class="container">
+	<h2>@Model.Title</h2>
+
+	<div class="row">
+		<div class="col-lg-6 col-md-6">
+			<section id="main-carousel" class="splide">
+				<div class="splide__track">
+					<ul class="splide__list">
+						@{
+							if (Model.ImagePaths != null)
+							{
+								for (var i = 0; i < Model.ImagePaths.Count; i++)
+								{
+									<li class="splide__slide">
+										<img src="@Url.Content("~/")@Model.ImagePaths[i]" alt="">
+									</li>
+								}
+							}
+						}
+					</ul>
+				</div>
+			</section>
+			<section id="thumbnail-carousel"
+					 class="splide"
+					 aria-label="The carousel with thumbnails. Selecting a thumbnail will change the Beautiful Gallery carousel.">
+				<div class="splide__track">
+					<ul class="splide__list">
+						@{
+							if (Model.ImagePaths != null)
+							{
+								for (var i = 0; i < Model.ImagePaths.Count; i++)
+								{
+
+									<li class="splide__slide">
+										<img src="@Url.Content("~/")@Model.ImagePaths[i]" alt="">
+									</li>
+								}
+							}
+						}
+					</ul>
+				</div>
+			</section>
+
+		</div>
+
+		<div class="col-lg-6 col-md-6">
+			<!-- Banner details -->
+			<h3>Details</h3>
+			<p>@Model.Description1</p>
+			<p>@Model.Description2</p>
+		</div>
+	</div>
+
+	
+</div>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var main = new Splide('#main-carousel', {
+			type: 'fade',
+			rewind: true,
+			pagination: false,
+			arrows: true,
+		});
+
+
+		var thumbnails = new Splide('#thumbnail-carousel', {
+			fixedWidth: 100,
+			fixedHeight: 60,
+			gap: 10,
+			rewind: true,
+			pagination: false,
+			isNavigation: true,
+			breakpoints: {
+				600: {
+					fixedWidth: 60,
+					fixedHeight: 44,
+				},
+			},
+		});
+
+
+		main.sync(thumbnails);
+		main.mount();
+		thumbnails.mount();
+	});
+
+
+</script>
+ 

@@ -1,0 +1,136 @@
+﻿@model List<ASPNetCoreECommerceSample.Models.ProductModel>
+@{
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+	ViewBag.Title = "Index";
+	int index = 0;
+}
+<div class="container">
+
+	<h2 class="pt-100 ">Products</h2>
+	<h4 class="pb-95">Manage all products.</h4>
+
+	<div class="d-flex justify-content-between align-items-center mb-3">
+		<h4>Product List</h4>
+		@Html.ActionLink("Add Product", "AddProduct", null, new { @class = "btn btn-primary btn-sm" })
+	</div>
+
+
+	<div class="row">
+
+		<div class="col-lg-12 col-md-12 col-sm-12 col-12">
+			<div>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>
+								S/N
+							</th>
+							<th>
+								Name
+							</th>
+							<th>
+								Description
+							</th>
+							<th>
+								Quantity
+							</th>
+							<th>
+								Color
+							</th>
+							<th>
+								Price
+							</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var prod in Model)
+						{
+							<tr>
+								@{
+									index++;
+								}
+								<td>
+									@index
+								</td>
+								<td>
+									<a href="/Products/ProductDetails/@prod.Id">@prod.Name</a>								
+
+								</td>
+								<td>
+									@prod.Description
+								</td>
+								<td>
+									@prod.Quantity
+								</td>
+								<td>
+									@prod.AvailableColors
+								</td>
+								<td>
+									&#x20A6; @prod.NormalPrice.ToString("N")
+								</td>
+								<td>
+									@* <a href="/Products/Edit/@prod.Id">Edit</a> *@
+									<a asp-action="Edit" asp-route-id="@prod.Id" class="btn btn-warning btn-sm">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+											<path d="M 23.90625 3.96875 C 22.859375 3.96875 21.8125 4.375 21 5.1875 L 5.1875 21 L 5.125 21.3125 L 4.03125 26.8125 L 3.71875 28.28125 L 5.1875 27.96875 L 10.6875 26.875 L 11 26.8125 L 26.8125 11 C 28.4375 9.375 28.4375 6.8125 26.8125 5.1875 C 26 4.375 24.953125 3.96875 23.90625 3.96875 Z M 23.90625 5.875 C 24.410156 5.875 24.917969 6.105469 25.40625 6.59375 C 26.378906 7.566406 26.378906 8.621094 25.40625 9.59375 L 24.6875 10.28125 L 21.71875 7.3125 L 22.40625 6.59375 C 22.894531 6.105469 23.402344 5.875 23.90625 5.875 Z M 20.3125 8.71875 L 23.28125 11.6875 L 11.1875 23.78125 C 10.53125 22.5 9.5 21.46875 8.21875 20.8125 Z M 6.9375 22.4375 C 8.136719 22.921875 9.078125 23.863281 9.5625 25.0625 L 6.28125 25.71875 Z"></path>
+										</svg>
+									</a>
+								</td>
+								<td>
+									@using (Html.BeginForm("Delete", "Products", FormMethod.Post, new { id = "deleteForm" }))
+									{
+										@Html.AntiForgeryToken()
+										@*@Html.HttpMethodOverride(HttpVerbs.Delete)*@
+										@Html.Hidden("Id", prod.Id)
+
+										<input type="submit" value="Delete" onclick="return confirmDelete();" class="btn btn-danger btn-xs" style="border-radius: 50px; padding: 7px 12px;" />
+									}
+
+									<form asp-action="Delete" asp-route-id="@prod.Id" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this?');">
+										<button type="submit" class="btn btn-danger btn-sm">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32" fill="currentColor">
+												<path d="M 13.59375 4 L 13.28125 4.28125 L 12.5625 5 L 6 5 L 6 7 L 7 7 L 7 25 C 7 26.644531 8.355469 28 10 28 L 22 28 C 23.644531 28 25 26.644531 25 25 L 25 7 L 26 7 L 26 5 L 19.4375 5 L 18.71875 4.28125 L 18.40625 4 Z M 14.4375 6 L 17.5625 6 L 18.28125 6.71875 L 18.59375 7 L 23 7 L 23 25 C 23 25.554688 22.554688 26 22 26 L 10 26 C 9.445313 26 9 25 L 9 7 L 13.40625 7 L 13.71875 6.71875 Z M 11 11 L 11 22 L 13 22 L 13 11 Z M 15 11 L 15 22 L 17 22 L 17 11 Z M 19 11 L 19 22 L 21 22 L 21 11 Z"></path>
+											</svg>
+										</button>
+									</form>
+
+									@*@Html.ActionLink("Delete","Delete", new {id = prod.Id}, new {onclick = "return confirm('Are you sure you really want to delete this product?');"})*@
+								</td>
+							</tr>
+						}
+					</tbody>
+
+				</table>
+			</div>
+			
+
+		</div>
+	</div>
+</div>
+
+
+
+<script>
+	function confirmDelete() {
+		if (confirm('Are you sure you really want to delete this product?')) {
+			$.ajax({
+				type: "POST",
+				url: $("#deleteForm").attr("action"),
+				data: $("#deleteForm").serialize(),
+				success: function (response) {
+					console.log("SUCCESS : ", data);
+					window.location.href = data;
+				},
+				error: function (xhr, status, error) {
+
+				}
+
+
+			});
+
+		}
+		return false;
+	}
+</script>

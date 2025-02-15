@@ -1,0 +1,480 @@
+﻿@using ASPNetCoreECommerceSample
+@model ASPNetCoreECommerceSample.Models.ProductModel
+
+@{
+    ViewBag.Title = "AddProduct";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    /* Main carousel styling */
+    #main-carousel {
+        margin-bottom: 1rem;
+    }
+    
+    #main-carousel .splide__track {
+        background: #f8f8f8;
+        border-radius: 4px;
+    }
+
+    #main-carousel .splide__slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        aspect-ratio: 1;
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    #main-carousel .splide__slide img {
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+    /* Thumbnail carousel styling */
+    #thumbnail-carousel .splide__track {
+        padding: 0.5rem 0;
+    }
+
+    #thumbnail-carousel .splide__slide {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 80px !important;
+        height: 80px !important;
+        margin-right: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: opacity 0.3s ease;
+    }
+
+    #thumbnail-carousel .splide__slide.is-active {
+        border-color: #0066cc;
+        opacity: 1;
+    }
+
+    #thumbnail-carousel .splide__slide img {
+        max-width: 90%;
+        max-height: 90%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+    }
+
+    /* Form styling */
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .control-label {
+        margin-bottom: 0.5rem;
+    }
+
+    /* Tags input styling */
+    .tagsinput {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        border-radius: 4px;
+        min-height: 44px;
+    }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
+        background: #e9ecef;
+        padding: 0.25rem 0.5rem;
+        margin: 0.25rem;
+        border-radius: 3px;
+        font-size: 0.875rem;
+    }
+
+    .tag-text {
+        margin-right: 0.25rem;
+    }
+
+    .tag-remove {
+        border: none;
+        background: none;
+        color: #666;
+        cursor: pointer;
+        padding: 0 0.25rem;
+        font-size: 1rem;
+        line-height: 1;
+    }
+
+        .tag-remove:hover {
+            color: #dc3545;
+        }
+
+    .tag-input {
+        border: none;
+        padding: 0.25rem;
+        margin: 0.25rem;
+        outline: none;
+        min-width: 100px;
+    }
+
+        .tag-input:focus {
+            outline: none;
+        }
+
+    @@media (max-width: 768px) {
+        #main-carousel .splide__slide {
+            aspect-ratio: 1;
+        }
+
+        #thumbnail-carousel .splide__slide {
+            width: 60px !important;
+            height: 60px !important;
+        }
+    }
+</style>
+
+<div class="container">
+    <h2 class="pt-100">Products</h2>
+    <h4 class="pb-95">Add a new product.</h4>
+    <div class="row pb-95">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            <!-- Main carousel for the larger image -->
+            <section id="main-carousel" class="splide mb-3">
+                <div class="splide__track">
+                    <ul class="splide__list" id="img-main">
+                        @if (Model.ImagePaths != null)
+                        {
+                            foreach (var path in Model.ImagePaths)
+                            {
+                                <li class="splide__slide">
+                                    <img src="@Url.Content("~/")@path" alt="Product Image">
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Thumbnail carousel -->
+            <section id="thumbnail-carousel" class="splide" aria-label="Product thumbnails">
+                <div class="splide__track">
+                    <ul class="splide__list" id="img-thumb">
+                        @if (Model.ImagePaths != null)
+                        {
+                            foreach (var path in Model.ImagePaths)
+                            {
+                                <li class="splide__slide">
+                                    <img src="@Url.Content("~/")@path" alt="Product Thumbnail">
+                                </li>
+                            }
+                        }
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            @using (Html.BeginForm("AddProduct", "Products", FormMethod.Post, new { id = "productForm", enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.Id)
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div>
+                            @Html.EditorFor(model => model.Name)
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Quantity, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div>
+                            @Html.EditorFor(model => model.Quantity)
+                            @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div>
+                            @Html.EditorFor(model => model.Description)
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LongDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div>
+                            @Html.TextAreaFor(model => model.LongDescription)
+                            @Html.ValidationMessageFor(model => model.LongDescription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!-- Tags Input -->
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Tags, "Tags", new { @class = "control-label col-md-2" })
+                        <div>
+                            <div id="tags-container" class="tagsinput">
+                                <input type="hidden" name="Tags" id="tags-hidden" />
+                                <div id="tags-list"></div>
+                                <input type="text" id="tag-input" class="tag-input" placeholder="Add a tag and press Enter" />
+                            </div>
+                            <small class="text-muted">Press Enter to add a tag</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AvailableColors, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div>
+                            @Html.EditorFor(model => model.AvailableColors)
+                            @Html.ValidationMessageFor(model => model.AvailableColors, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NormalPrice, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div>
+                            @Html.EditorFor(model => model.NormalPrice)
+                            @Html.ValidationMessageFor(model => model.NormalPrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Categories, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div>
+                            @Html.DropDownListFor(model => model.SelectedCategoryId, Model.Categories, "Select a Category", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.NormalPrice, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Images, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div>
+                            <input type="file" name="Images" multiple id="imageInput" accept="image/*" />
+                            @Html.ValidationMessageFor(model => model.Images, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="button" value="Save" class="btn btn-primary" onclick="submitForm()" />
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    // Global Splide instances and array for selected images
+    var mainSplide, thumbSplide;
+    var selectedImages = [];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize Splide carousels
+        mainSplide = new Splide('#main-carousel', {
+            type: 'fade',
+            rewind: true,
+            pagination: false,
+            arrows: true,
+            heightRatio: 1,
+        });
+
+        thumbSplide = new Splide('#thumbnail-carousel', {
+            rewind: true,
+            pagination: false,
+            isNavigation: true,
+            focus: 'center',
+            dragMinThreshold: 10,
+            perPage: 5,
+            gap: 10,
+            breakpoints: {
+                768: {
+                    perPage: 4,
+                },
+                576: {
+                    perPage: 3,
+                }
+            }
+        });
+
+        mainSplide.sync(thumbSplide);
+        mainSplide.mount();
+        thumbSplide.mount();
+
+
+        // Initialize tags functionality
+        initializeTags();
+    });
+
+    function removeTag(element) {
+        element.parentNode.removeChild(element);
+    }
+
+    // Tags handling
+    function initializeTags() {
+        const tagInput = document.getElementById('tag-input');
+        const tagsList = document.getElementById('tags-list');
+        const tagsHidden = document.getElementById('tags-hidden');
+        let tags = [];
+
+        // Function to update hidden input with tags
+        function updateHiddenInput() {
+            tagsHidden.value = JSON.stringify(tags);
+        }
+
+        // Function to create a new tag
+        function createTag(text) {
+            const tag = document.createElement('span');
+            tag.className = 'tag';
+            tag.innerHTML = `
+                    <span class="tag-text">${text}</span>
+                    <button type="button" class="tag-remove" aria-label="Remove tag">&times;</button>
+                `;
+
+            // Add remove event listener
+            tag.querySelector('.tag-remove').addEventListener('click', function () {
+                const index = tags.indexOf(text);
+                if (index > -1) {
+                    tags.splice(index, 1);
+                    tag.remove();
+                    updateHiddenInput();
+                }
+            });
+
+            return tag;
+        }
+
+        // Function to add a new tag
+        function addTag(text) {
+            text = text.trim();
+            if (text && !tags.includes(text)) {
+                tags.push(text);
+                tagsList.appendChild(createTag(text));
+                updateHiddenInput();
+            }
+        }
+
+        // Handle input events
+        tagInput.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const text = this.value.trim();
+                if (text) {
+                    addTag(text);
+                    this.value = '';
+                }
+            }
+        });
+
+        // Initialize any existing tags if editing a product
+        if (typeof initialTags !== 'undefined' && Array.isArray(initialTags)) {
+            initialTags.forEach(tag => addTag(tag));
+        }
+    }
+
+    function handleImagePreview() {
+        var imageMain = document.getElementById('img-main');
+        var imageThumb = document.getElementById('img-thumb');
+        var input = document.getElementById('imageInput');
+        var files = input.files;
+
+        // Clear existing images
+        imageMain.innerHTML = '';
+        imageThumb.innerHTML = '';
+        selectedImages = [];
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            if (file.type.match('image.*')) {
+                var reader = new FileReader();
+
+                reader.onload = (function(file) {
+                    return function(event) {
+                        // Create main slide
+                        var liMain = document.createElement('li');
+                        liMain.className = 'splide__slide';
+                        var imgMain = document.createElement('img');
+                        imgMain.src = event.target.result;
+                        imgMain.alt = file.name;
+                        liMain.appendChild(imgMain);
+                        imageMain.appendChild(liMain);
+
+                        // Create thumbnail slide
+                        var liThumb = document.createElement('li');
+                        liThumb.className = 'splide__slide';
+                        var imgThumb = document.createElement('img');
+                        imgThumb.src = event.target.result;
+                        imgThumb.alt = file.name;
+                        liThumb.appendChild(imgThumb);
+                        imageThumb.appendChild(liThumb);
+
+                        // Store the selected image file
+                        selectedImages.push(file);
+
+                        // Refresh Splide instances
+                        mainSplide.refresh();
+                        thumbSplide.refresh();
+                    };
+                })(file);
+
+                reader.readAsDataURL(file);
+            }
+        }
+    }
+
+    // Attach the image preview handler to the file input
+    document.getElementById('imageInput').addEventListener('change', handleImagePreview);
+
+    // Prevent default form submission
+    document.getElementById('productForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+        submitForm();
+    });
+
+    function submitForm() {
+        var formData = new FormData();
+        var form = document.getElementById('productForm');
+        var formElements = form.elements;
+
+        // Append form data
+        for (var i = 0; i < formElements.length; i++) {
+            var element = formElements[i];
+            if (element.name && element.name !== 'Images') {
+                formData.append(element.name, element.value);
+            }
+        }
+
+        // Append tags
+        formData.append('Tags', JSON.stringify(tags));
+
+        // Append selected images
+        for (var i = 0; i < selectedImages.length; i++) {
+            formData.append('Images', selectedImages[i]);
+        }
+
+        // Submit form via AJAX
+        $.ajax({
+            url: '/Products/AddProduct',
+            method: 'POST',
+            enctype: 'multipart/form-data',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log("SUCCESS:", data);
+                window.location.href = data;
+            },
+            error: function (xhr, status, error) {
+                console.error("Error submitting form:", error);
+                // Add error handling UI here
+            }
+        });
+    }
+</script>

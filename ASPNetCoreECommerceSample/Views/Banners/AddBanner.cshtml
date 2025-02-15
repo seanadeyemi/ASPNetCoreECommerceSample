@@ -1,0 +1,318 @@
+﻿@using ASPNetCoreECommerceSample
+@model ASPNetCoreECommerceSample.Models.BannerModel
+
+@{
+	ViewBag.Title = "AddBanner";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<div class="container">
+	<h2 class="pt-100 ">Banners</h2>
+	<h4 class="pb-95">Add a new product.</h4>
+	<div class="row pb-95">
+
+		<div class="col-lg-6 col-md-6 col-sm-6 col-6">
+			<!-- Image previews for selected images -->
+			<section id="main-carousel" class="splide">
+				<div class="splide__track">
+					<ul class="splide__list" id="img-main">
+						@*@{
+						if (Model.ImagePaths != null)
+						{
+						for (var i = 0; i < Model.ImagePaths.Count; i++)
+						{
+						<li class="splide__slide">
+						<img src="@Url.Content("~/")@Model.ImagePaths[i]" alt="">
+						</li>
+						}
+						}
+						}*@
+					</ul>
+				</div>
+			</section>
+			<section id="thumbnail-carousel"
+					 class="splide"
+					 aria-label="The carousel with thumbnails. Selecting a thumbnail will change the Beautiful Gallery carousel.">
+				<div class="splide__track">
+					<ul class="splide__list" id="img-thumb">
+						@*@{
+						if (Model.ImagePaths != null)
+						{
+						for (var i = 0; i < Model.ImagePaths.Count; i++)
+						{
+
+						<li class="splide__slide">
+						<img src="@Url.Content("~/")@Model.ImagePaths[i]" alt="">
+						</li>
+						}
+						}
+						}*@
+					</ul>
+				</div>
+			</section>
+
+
+
+			@*<div id="imagePreview" class="image-preview">
+			@if (Model.ImagePaths != null)
+			{
+			foreach (var image in Model.ImagePaths)
+			{
+			<img src="@image" alt="Product Image" class="img-thumbnail" />
+			}
+			}
+
+			</div>*@
+
+
+
+		</div>
+
+		<div class="col-lg-6 col-md-6 col-sm-6 col-6">
+
+			@using (Html.BeginForm("AddBanner", "Bs", FormMethod.Post, new { id = "bannerForm", enctype = "multipart/form-data" }))
+			{
+				@Html.AntiForgeryToken()
+				<div class="form-horizontal">
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					@Html.HiddenFor(model => model.Id)
+
+					<div class="form-group">
+						@Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div>
+							@Html.EditorFor(model => model.Title)
+							@Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+						</div>
+					</div>				
+					<div class="form-group">
+						@Html.LabelFor(model => model.Description1, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div>
+							@Html.EditorFor(model => model.Description1)
+							@Html.ValidationMessageFor(model => model.Description1, "", new { @class = "text-danger" })
+						</div>
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(model => model.Description2, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div>
+							@Html.EditorFor(model => model.Description2)
+							@Html.ValidationMessageFor(model => model.Description2, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div id="form-tags-1_tagsinput" class="tagsinput" style="width: auto; min-height: auto; height: auto;">
+							<span class="tag">
+								<span class="tag-text">jQuery</span>
+								<button class="tag-remove"></button>
+							</span>
+							<span class="tag">
+								<span class="tag-text">Script</span>
+								<button class="tag-remove"></button>
+							</span>
+							<span class="tag">
+								<span class="tag-text">Net</span>
+								<button class="tag-remove"></button>
+							</span>
+							<div id="form-tags-1_addTag">
+								<input id="form-tags-1_tag" class="tag-input error" value="" placeholder="Add a tag">
+							</div>
+						</div>
+					</div>
+
+					
+					<!-- Add multiple image file input control -->
+					<div class="form-group">
+						@Html.LabelFor(model => model.Images, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div>
+							<input type="file" name="Images" multiple id="imageInput" />
+							@Html.ValidationMessageFor(model => model.Images, "", new { @class = "text-danger" })
+						</div>
+					</div>
+
+				</div>
+				<div class="form-group">
+					<div class="col-md-offset-2 col-md-10">
+						@*<input type="submit" value="Save" class="btn btn-primary" />*@
+						<input type="button" value="Save" class="btn btn-primary" onclick="submitForm()" />
+					</div>
+				</div>
+			}
+
+
+		</div>
+
+	</div>
+</div>
+
+<script>
+
+
+	
+
+	document.addEventListener('DOMContentLoaded', function () {
+		prepareThumbs();
+
+		var removeButtons = document.querySelectorAll('.tag-remove');
+
+		removeButtons.forEach(function (button) {
+			button.addEventListener('click', function (event) {
+				// Prevent default action if necessary
+				event.preventDefault();
+
+				// Get the parent tag element
+				var tagElement = this.closest('.tag');
+				if (tagElement) {
+					removeTag(tagElement);
+				}
+			});
+		});
+	});
+
+	// Function to remove the tag
+	function removeTag(element, value) {
+		// Custom logic to handle tag removal if any, e.g., updating the DOM or making an AJAX call.
+		// For now, it simply removes the element.
+		element.parentNode.removeChild(element);
+	}
+
+
+	function prepareThumbs() {
+		var main = new Splide('#main-carousel', {
+			type: 'fade',
+			rewind: true,
+			pagination: false,
+			arrows: true,
+		});
+
+
+		var thumbnails = new Splide('#thumbnail-carousel', {
+			fixedWidth: 100,
+			fixedHeight: 60,
+			gap: 10,
+			rewind: true,
+			pagination: false,
+			isNavigation: true,
+			breakpoints: {
+				600: {
+					fixedWidth: 60,
+					fixedHeight: 44,
+				},
+			},
+		});
+
+
+		main.sync(thumbnails);
+		main.mount();
+		thumbnails.mount();
+
+	}
+
+
+
+	//prevent the form from being submitted by the browser's default behavior and instead submit it using the submitForm method
+	document.getElementById('productForm').addEventListener('submit', function (e) {
+		e.preventDefault();
+		submitForm();
+	});
+
+
+	// Initialize an array to store the selected images
+	var selectedImages = [];
+
+	function handleImagePreview() {
+		//	var imagePreview = document.getElementById('imagePreview');
+		var imageMain = document.getElementById('img-main');
+		var imageThumb = document.getElementById('img-thumb');
+		var input = document.getElementById('imageInput');
+		var files = input.files;
+
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			if (file.type.match('image.*')) {
+				var reader = new FileReader();
+
+				reader.onload = function (event) {
+					//var image = document.createElement('img');
+					//image.src = event.target.result;
+					//image.className = 'img-thumbnail';
+					//imagePreview.appendChild(image);
+
+
+					var image1 = document.createElement('img');
+					image1.src = event.target.result;
+
+					var image2 = document.createElement('img');
+					image2.src = event.target.result;
+
+
+					var liMain = document.createElement('li');
+					liMain.className = 'splide__slide';
+					var liThumb = document.createElement('li');
+					liThumb.className = 'splide__slide';
+
+
+					liMain.appendChild(image1);
+					liThumb.appendChild(image2);
+
+					imageMain.appendChild(liMain);
+					imageThumb.appendChild(liThumb);
+
+					prepareThumbs();
+					// Add the selected image to the array
+					selectedImages.push(file);
+				};
+
+				reader.readAsDataURL(file);
+			}
+		}
+	}
+
+	// Attach the 'change' event to the file input
+	document.getElementById('imageInput').addEventListener('change', handleImagePreview);
+
+	function submitForm() {
+		var formData = new FormData();
+
+
+
+		// Add other form data
+		var form = document.getElementById('productForm');
+		var formElements = form.elements;
+		for (var i = 0; i < formElements.length; i++) {
+			var element = formElements[i];
+			if (element.name) {
+				if (element.name != 'Images') {
+					formData.append(element.name, element.value);
+				}
+			}
+		}
+
+		// Add all selected images to the form data
+		for (var i = 0; i < selectedImages.length; i++) {
+			formData.append('Images', selectedImages[i]);
+		}
+
+
+		// Submit the form using AJAX or a similar method
+		// The URL and method will depend on your server-side code
+		$.ajax({
+			url: '/Banners/AddBanner',
+			method: 'POST',
+			enctype: 'multipart/form-data',
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (data) {
+				// Handle successful submission
+				console.log("SUCCESS : ", data);
+				window.location.href = data;
+			},
+			error: function () {
+				// Handle errors
+			}
+		});
+	}
+</script>
+
+

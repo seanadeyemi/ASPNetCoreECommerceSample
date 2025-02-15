@@ -1,4 +1,5 @@
 ﻿using ASPNetCoreECommerceSample.Entities.Identity;
+using ASPNetCoreECommerceSample.Helpers;
 using ASPNetCoreECommerceSample.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
@@ -78,7 +79,7 @@ namespace ASPNetCoreECommerceSample.Controllers
                 return View(usermodel);
             }
 
-            var role = "Visitor";
+            var role = RoleHelper.Visitor;
 
             if (!await _roleManager.RoleExistsAsync(role))
             {
@@ -110,7 +111,11 @@ namespace ASPNetCoreECommerceSample.Controllers
             if (user != null)
             {
                 //try to sign in the user with the credentials they provided
-                var result = await _signInManager.PasswordSignInAsync(loginModel.UserName, loginModel.Password, loginModel.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(
+                    loginModel.UserName, 
+                    loginModel.Password, 
+                    loginModel.RememberMe, 
+                    lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {

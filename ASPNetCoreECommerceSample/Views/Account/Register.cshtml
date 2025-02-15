@@ -40,9 +40,9 @@
                                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                         <input asp-for="Email" placeholder="Email" type="email">
                                         <span asp-validation-for="Email" class="text-danger"></span>
-                                        <input asp-for="FirstName" placeholder="Full Name" type="text">
+                                        <input asp-for="FirstName" placeholder="First Name" type="text">
                                         <span asp-validation-for="FirstName" class="text-danger"></span>
-                                        <input asp-for="LastName" placeholder="Full Name" type="text">
+                                        <input asp-for="LastName" placeholder="Last Name" type="text">
                                         <span asp-validation-for="LastName" class="text-danger"></span>
                                         <div class="button-box">
                                             <button type="submit"><span>Register</span></button>
@@ -57,3 +57,8 @@
         </div>
     </div>
 </div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

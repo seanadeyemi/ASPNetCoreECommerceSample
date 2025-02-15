@@ -21,7 +21,10 @@
                         <div class="col-xl-6 col-lg-6 col-md-6 col-12 col-sm-6">
                             <div class="slider-single-img slider-animated-1">
                                 @*<img class="animated" src="~/img/slider/single-slide-1.png" alt="">*@
-                                <img class="animated" src="@Url.Content("~/")@banner.ImagePaths[0]" alt="">
+                                @{
+                                    var bannerPath =  banner.ImagePaths.Any() ? Url.Content("~/") + banner.ImagePaths[0] : "";
+                                }
+                                <img class="animated" src="@bannerPath" alt="">
                             </div>
                         </div>
                     </div>

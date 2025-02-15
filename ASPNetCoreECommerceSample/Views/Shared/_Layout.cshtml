@@ -14,7 +14,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="~/img/favicon.png">
 
     <!-- CSS
     ============================================ -->
@@ -58,24 +58,22 @@
                                     <a href="/Home/Index">Home</a>
 
                                 </li>
-                                <li>
+                    @*             <li>
                                     <a href="shop.html"> Categories <i class="fa fa-angle-down"></i> </a>
                                     <ul class="mega-menu">
                                         <li>
                                             <ul>
                                                 <li class="mega-menu-title"><a href="#">shop layout</a></li>
+
                                                 <li><a href="shop.html">standard style</a></li>
 
                                             </ul>
                                         </li>
 
-                                        <li>
-                                            <ul>
-                                                <li class="mega-menu-img"><a href="shop.html"><img src="assets/img/banner/banner-12.png" alt=""></a></li>
-                                            </ul>
-                                        </li>
                                     </ul>
-                                </li>
+                                </li> *@
+
+                                @await Component.InvokeAsync("CategoriesMenu")
 
 
                                 <li><a href="about.html"> About </a></li>
@@ -127,7 +125,7 @@
                                         </ul>
                                     </form>
                                     <ul>
-                                        <li><a href="wishlist.html">Wishlist  </a></li>
+                                        <li><a href="/Wishlist/Index">Wishlist  </a></li>
                                         <li><a href="my-account.html">my account</a></li>
                                     </ul>
 
@@ -138,7 +136,7 @@
                                     <ul>
                                         <li><a href="/Account/Login">Login </a></li>
                                         <li><a href="/Account/Register">Register</a></li>
-                                        <li><a href="wishlist.html">Wishlist  </a></li>
+                                        <li><a href="/Wishlist/Index">Wishlist  </a></li>
                                     </ul>
 
                                 }
@@ -146,7 +144,7 @@
                             </div>
                         </div>
                         <div class="same-style header-wishlist">
-                            <a href="wishlist.html"><i class="pe-7s-like"></i></a>
+                            <a href="/Wishlist/Index"><i class="pe-7s-like"></i></a>
                         </div>
                         <div class="same-style cart-wrap">
                             <button class="icon-cart">
@@ -246,7 +244,7 @@
                                     <li><a href="about.html">about us</a></li>
                                     <li><a href="cart-page.html">cart page</a></li>
                                     <li><a href="checkout.html">checkout </a></li>
-                                    <li><a href="wishlist.html">wishlist </a></li>
+                                    <li><a href="/Wishlist/Index">wishlist </a></li>
                                     <li><a href="my-account.html">my account</a></li>
                                     <li><a href="login-register.html">login / register </a></li>
                                     <li><a href="contact.html">contact us </a></li>
@@ -497,6 +495,10 @@
     <!-- Modal end -->
     <!-- All JS is here
       ============================================ -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="~/js/vendor/modernizr-3.6.0.min.js"></script>
 
@@ -506,7 +508,7 @@
 
     <!-- Ajax Mail -->
     <script src="~/js/ajax-mail.js"></script>
-
+	<script src="~/plugins/owlcarousel/owl.carousel.min.js"></script>
     <!-- Main JS -->
     <script src="~/js/main.js"></script>
 
@@ -516,6 +518,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
     @RenderSection("script2", required: false)
+    @RenderSection("script3", required: false)
     <script>
         $(document).ready(function () {
             // Function to update the cart count

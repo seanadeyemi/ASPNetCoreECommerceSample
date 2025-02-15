@@ -10,6 +10,6 @@ namespace ASPNetCoreECommerceSample.Entities
         public string Description1 { get; set; }
         public string Description2 { get; set; }
         public virtual List<BannerImage> BannerImages { get; set; }
-
+  
     }
 }

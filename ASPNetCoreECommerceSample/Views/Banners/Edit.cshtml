@@ -1,0 +1,303 @@
+﻿
+@using ASPNetCoreECommerceSample
+@model ASPNetCoreECommerceSample.Models.BannerModel
+
+@{
+	ViewBag.Title = "EditBanner";
+	Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12 col-md-12" style="height: 48px; width: 48px;">
+			<svg aria-hidden="true" aria-label="" class="Hn_ Uvi gUZ U9O kVc" height="20" role="img" viewBox="0 0 24 24" width="20">
+				<path d="M8.41 4.59a2 2 0 1 1 2.83 2.82L8.66 10H21a2 2 0 0 1 0 4H8.66l2.58 2.59a2 2 0 1 1-2.82 2.82L1 12z"></path>
+			</svg>
+		</div>
+	</div>
+
+	<h2>@Model.Title</h2>
+
+	<div class="row">
+		<div class="col-lg-6 col-md-6">
+			<section id="main-carousel" class="splide">
+				<div class="splide__track">
+					<ul class="splide__list" id="img-main">
+						@{
+							if (Model.ImagePaths != null)
+							{
+								for (var i = 0; i < Model.ImagePaths.Count; i++)
+								{
+									<li class="splide__slide">
+										<img src="@Url.Content("~/")@Model.ImagePaths[i]" alt="">
+									</li>
+								}
+							}
+						}
+					</ul>
+				</div>
+			</section>
+			<section id="thumbnail-carousel"
+					 class="splide"
+					 aria-label="The carousel with thumbnails. Selecting a thumbnail will change the Beautiful Gallery carousel.">
+				<div class="splide__track">
+					<ul class="splide__list" id="img-thumb">
+						@{
+							if (Model.ImagePaths != null)
+							{
+								for (var i = 0; i < Model.ImagePaths.Count; i++)
+								{
+
+									<li class="splide__slide">
+										<img src="@Url.Content("~/")@Model.ImagePaths[i]" alt="">
+									</li>
+								}
+							}
+						}
+					</ul>
+				</div>
+			</section>
+		</div>
+		<div class="col-lg-6 col-md-6">
+			@using (Html.BeginForm("Edit", "Banners", FormMethod.Post, new { id = "productForm", enctype = "multipart/form-data" }))
+			{
+				@Html.AntiForgeryToken()
+				<div class="form-horizontal">
+					@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+					@Html.HiddenFor(model => model.Id)
+
+					<div class="form-group">
+						@Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div>
+							@Html.EditorFor(model => model.Title)
+							@Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+						</div>
+					</div>
+									
+					<div class="form-group">
+						@Html.LabelFor(model => model.Description1, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div>
+							@Html.EditorFor(model => model.Description1)
+							@Html.ValidationMessageFor(model => model.Description1, "", new { @class = "text-danger" })
+						</div>
+					</div>
+					<div class="form-group">
+						@Html.LabelFor(model => model.Description2, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div>
+							@Html.TextAreaFor(model => model.Description2)
+							@Html.ValidationMessageFor(model => model.Description2, "", new { @class = "text-danger" })
+						</div>
+					</div>
+				
+				
+					<!-- Add multiple image file input control -->
+					<div class="form-group">
+						@Html.LabelFor(model => model.Images, htmlAttributes: new { @class = "control-label col-md-2" })
+						<div>
+							<input type="file" name="Images" multiple id="imageInput" />
+							@Html.ValidationMessageFor(model => model.Images, "", new { @class = "text-danger" })
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-md-6">
+							@*<input type="submit" value="Update" class="btn btn-primary" />*@
+
+							<input type="button" value="Save" class="btn btn-primary" onclick="submitForm()" />
+						</div>
+						<div class="col-md-6">
+							@Html.ActionLink("Back to Index", "Index", null, new { @class = "btn btn-primary text-align-right" })
+						</div>
+
+
+					</div>
+
+				</div>
+			}
+		</div>
+	</div>
+</div>
+
+<script>
+
+	// Initialize an array to store the selected images
+	var selectedImages = [];
+
+	document.addEventListener('DOMContentLoaded', function () {
+		prepareThumbs();
+		getImagesAndSaveForUpload()
+	});
+
+
+	function prepareThumbs() {
+		var main = new Splide('#main-carousel', {
+			type: 'fade',
+			rewind: true,
+			pagination: false,
+			arrows: true,
+		});
+
+
+		var thumbnails = new Splide('#thumbnail-carousel', {
+			fixedWidth: 100,
+			fixedHeight: 60,
+			gap: 10,
+			rewind: true,
+			pagination: false,
+			isNavigation: true,
+			breakpoints: {
+				600: {
+					fixedWidth: 60,
+					fixedHeight: 44,
+				},
+			},
+		});
+
+
+		main.sync(thumbnails);
+		main.mount();
+		thumbnails.mount();
+
+	}
+
+	function getImagesAndSaveForUpload()
+	{
+		var imageMain = document.getElementById('img-thumb');
+
+		// Get all li elements
+		var liElements = imageMain.querySelectorAll('li');
+
+		// Loop through each li element
+		for (var i = 0; i < liElements.length; i++) {
+			// Get the img child element
+			var imgElement = liElements[i].querySelector('img');
+			// Check if an img element exists
+			if (imgElement) {
+				// Extract the src value
+				var imgSrc = imgElement.getAttribute('src');
+
+				// Fetch the image data and convert it into a File object
+				fetch(imgSrc)
+					.then(response => response.blob())
+					.then(blob => {
+						var fileName = imgSrc.split('/').pop();
+						var file = new File([blob], fileName, { type: blob.type });
+
+						// Push the File object into the selectedImages array
+						selectedImages.push(file);
+					})
+					.catch(console.error);
+			}
+		}
+
+
+	}
+
+
+
+	//prevent the form from being submitted by the browser's default behavior and instead submit it using the submitForm method
+	document.getElementById('productForm').addEventListener('submit', function (e) {
+		e.preventDefault();
+		submitForm();
+	});
+
+
+
+
+	function handleImagePreview() {
+	//	var imagePreview = document.getElementById('imagePreview');
+		var imageMain = document.getElementById('img-main');
+		var imageThumb = document.getElementById('img-thumb');
+		var input = document.getElementById('imageInput');
+		var files = input.files;
+
+		for (var i = 0; i < files.length; i++) {
+			var file = files[i];
+			if (file.type.match('image.*')) {
+				var reader = new FileReader();
+
+				reader.onload = function (event) {
+					//var image = document.createElement('img');
+					//image.src = event.target.result;
+					//image.className = 'img-thumbnail';
+					//imagePreview.appendChild(image);
+
+
+					var image1 = document.createElement('img');
+					image1.src = event.target.result;
+
+					var image2 = document.createElement('img');
+					image2.src = event.target.result;
+
+
+					var liMain = document.createElement('li');
+					liMain.className = 'splide__slide';
+					var liThumb = document.createElement('li');
+					liThumb.className = 'splide__slide';
+
+
+					liMain.appendChild(image1);
+					liThumb.appendChild(image2);
+
+					imageMain.appendChild(liMain);
+					imageThumb.appendChild(liThumb);
+
+					prepareThumbs();
+					// Add the selected image to the array
+					selectedImages.push(file);
+				};
+
+				reader.readAsDataURL(file);
+			}
+		}
+	}
+
+	// Attach the 'change' event to the file input
+	document.getElementById('imageInput').addEventListener('change', handleImagePreview);
+
+	function submitForm() {
+		var formData = new FormData();
+
+
+
+		// Add other form data
+		var form = document.getElementById('productForm');
+		var formElements = form.elements;
+		for (var i = 0; i < formElements.length; i++) {
+			var element = formElements[i];
+			if (element.name) {
+				if (element.name != 'Images') {
+				formData.append(element.name, element.value);
+				}
+			}
+		}
+
+		// Add all selected images to the form data
+		for (var i = 0; i < selectedImages.length; i++) {
+			formData.append('Images', selectedImages[i]);
+		}
+
+
+		// Submit the form using AJAX or a similar method
+		// The URL and method will depend on your server-side code
+		$.ajax({
+			url: '/Banners/Edit',
+			method: 'POST',
+			enctype: 'multipart/form-data',
+			data: formData,
+			processData: false,
+			contentType: false,
+			success: function (data) {
+				// Handle successful submission
+				console.log("SUCCESS : ", data);
+				window.location.href = data;
+			},
+			error: function () {
+				// Handle errors
+			}
+		});
+	}
+</script>
+

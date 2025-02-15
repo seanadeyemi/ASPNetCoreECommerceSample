@@ -1,0 +1,55 @@
+﻿@using ASPNetCoreECommerceSample
+@model List<ASPNetCoreECommerceSample.Models.CategoryModel>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewBag.Title = "Index";
+    int index = 0;
+}
+
+<div class="container">
+    <h2 class="pt-100 ">Categories</h2>
+
+    <h4 class="pb-95">Manage all Categories.</h4>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Category List</h4>
+        @Html.ActionLink("Add Category", "AddCategory", null, new { @class = "btn btn-success btn-sm" })
+    </div>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>S/N</th>
+            <th>Name</th>
+            <th>Parent Category</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach (var category in Model)
+        {
+            <tr>
+                @{
+                    index++;
+                }
+                <td>@index</td>
+                <td>@category.Name</td>
+                <td>@category.ParentCategoryName</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Category", new { id = category.Id })">Edit</a>
+                </td>
+                <td>
+                    @using (Html.BeginForm("Delete", "Category", new { id = category.Id }, FormMethod.Post, true, new { id = "deleteForm" + index }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete" onclick="return confirmDelete();" class="btn btn-danger btn-xs" />
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<script>
+    function confirmDelete() {
+        return confirm('Are you sure you really want to delete this category?');
+    }
+</script>

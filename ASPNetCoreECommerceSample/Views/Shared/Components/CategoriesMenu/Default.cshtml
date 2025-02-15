@@ -1,0 +1,23 @@
+﻿@model List<ASPNetCoreECommerceSample.Entities.Category>
+
+<li>
+    <a href="shop.html"> Categories <i class="fa fa-angle-down"></i> </a>
+    <ul class="mega-menu">
+        @foreach (var category in Model)
+        {
+            <li>
+                <ul>
+                    <li class="mega-menu-title">
+                        <a href="#">@category.Name</a>
+                    </li>
+                    @foreach (var subCategory in category.SubCategories)
+                    {
+                        <li>
+                            <a href="shop.html">@subCategory.Name</a>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+</li>

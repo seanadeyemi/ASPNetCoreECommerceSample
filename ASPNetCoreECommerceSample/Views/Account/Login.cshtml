@@ -33,7 +33,10 @@
                                         <div asp-validation-summary="All" class="text-danger"></div>
                                         <input asp-for="UserName" type="text" placeholder="Username">
                                         <span asp-validation-for="UserName" class="text-danger"></span>
-                                        <input asp-for="Password" type="password" placeholder="Password">
+                                        <div class="icons">
+                                            <i class="fa fa-eye"></i>
+                                        </div>
+                                        <input asp-for="Password" type="password" placeholder="Password" class="pass">
                                         <span asp-validation-for="Password" class="text-danger"></span>
                                         <div class="button-box">
                                             <div class="login-toggle-btn">
@@ -55,3 +58,26 @@
         </div>
     </div>
 </div>
+@section script3{
+    <script type="text/javascript">
+        const btn = document.querySelector('.fa-eye');
+        const passwordElem = document.querySelector('.pass');
+
+        btn.addEventListener('click', () => {
+            //console.log('test');
+            if (passwordElem.type === 'password') {
+                passwordElem.type = 'text';
+                btn.classList.replace('fa-eye', 'fa-eye-slash');
+            }
+            else {
+                passwordElem.type = 'password';
+                btn.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    </script>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

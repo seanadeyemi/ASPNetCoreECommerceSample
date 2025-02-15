@@ -27,7 +27,7 @@ namespace ASPNetCoreECommerceSample.Controllers
             var saleItemProducts = _productService.GetSaleItems();
             var newArrivalProducts = _productService.GetNewArrivals();
 
-
+            var prodImages = _productImageService.GetAllProductimages();
 
             //Map Best Seller products entity to its Model version
 
@@ -40,7 +40,7 @@ namespace ASPNetCoreECommerceSample.Controllers
                 NormalPrice = product.NormalPrice,
                 Rating = product.Rating ?? 0,
                 HasDiscount = product.DiscountPrice > 0,
-                ImagePaths = _productImageService.GetAllProductimages().Where(p => p.ProductId
+                ImagePaths = prodImages.Where(p => p.ProductId
                 == product.Id).Select(c => c.ImagePath).ToList(),
                 Id = product.Id
             }).ToList();
@@ -57,7 +57,7 @@ namespace ASPNetCoreECommerceSample.Controllers
                 NormalPrice = product.NormalPrice,
                 Rating = product.Rating ?? 0,
                 HasDiscount = product.DiscountPrice > 0,
-                ImagePaths = _productImageService.GetAllProductimages().Where(p => p.ProductId
+                ImagePaths = prodImages.Where(p => p.ProductId
                 == product.Id).Select(c => c.ImagePath).ToList(),
                 Id = product.Id
             }).ToList();
@@ -72,7 +72,7 @@ namespace ASPNetCoreECommerceSample.Controllers
                 NormalPrice = product.NormalPrice,
                 Rating = product.Rating ?? 0,
                 HasDiscount = product.DiscountPrice > 0,
-                ImagePaths = _productImageService.GetAllProductimages().Where(p => p.ProductId
+                ImagePaths = prodImages.Where(p => p.ProductId
                 == product.Id).Select(c => c.ImagePath).ToList(),
                 Id = product.Id
             }).ToList();
